@@ -86,26 +86,21 @@ export default function MainSidebar({ sections, activeId, onSelect, mobileOpen, 
                 ) : null}
             </nav>
 
-            <style>{`
-                @keyframes trainingGroundGlow {
-                    0%, 100% { box-shadow: 0 0 0 1px rgba(96, 165, 250, .35), 0 0 9px rgba(59, 130, 246, .28); }
-                    50% { box-shadow: 0 0 0 1px rgba(147, 197, 253, .75), 0 0 18px rgba(59, 130, 246, .72); }
-                }
-                .training-ground-glow {
-                    display: flex; align-items: center; gap: 10px; margin: 10px 8px 0; padding: 11px 12px;
-                    border: 1px solid rgba(96, 165, 250, .65); border-radius: 10px; color: #eff6ff;
-                    background: linear-gradient(110deg, rgba(37, 99, 235, .35), rgba(14, 165, 233, .16));
-                    text-decoration: none; font-weight: 800; font-size: 13px; animation: trainingGroundGlow 2s ease-in-out infinite;
-                }
-                .training-ground-glow:hover { background: linear-gradient(110deg, rgba(37, 99, 235, .55), rgba(14, 165, 233, .28)); }
-                .training-ground-glow-icon { display: inline-flex; width: 25px; height: 25px; align-items: center; justify-content: center; border-radius: 8px; background: rgba(96, 165, 250, .25); }
-                @media (prefers-reduced-motion: reduce) { .training-ground-glow { animation: none; } }
-            `}</style>
-            <Link href="/dashboard/training" onClick={onNavigate} className="training-ground-glow">
-                <span className="training-ground-glow-icon" aria-hidden="true">✦</span>
-                <span>Training Ground</span>
-                <span style={{ marginLeft: 'auto', fontSize: 10, letterSpacing: '.06em', opacity: .9 }}>PRACTICE</span>
-            </Link>
+            {/* Same structure as a course button (icon + label + sub-line), just golden + glowing. */}
+            <nav className={`${styles.sidebarNav} ${styles.sidebarNavGold}`}>
+                <Link
+                    href="/dashboard/training"
+                    onClick={onNavigate}
+                    className={`${styles.sidebarItem} ${styles.sidebarItemGold}`}
+                    style={{ textDecoration: 'none' }}
+                >
+                    <span className={`${styles.sidebarIconFallback} ${styles.sidebarIconGold}`} aria-hidden="true">✦</span>
+                    <span className={styles.sidebarItemLabel}>
+                        <span className={styles.goldTitle}>Training Ground</span>
+                        <span className={styles.goldSub}>Practice</span>
+                    </span>
+                </Link>
+            </nav>
 
             <div className={styles.railFoot}>
                 <div className={styles.railFootTitle}>Have a doubt?</div>
