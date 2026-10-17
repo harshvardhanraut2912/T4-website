@@ -139,9 +139,11 @@ export async function proxy(request, context) {
   const isRealAdminPagePath = pathname === '/admin' || pathname.startsWith('/admin/');
   const isApiRequest = pathname.startsWith('/api/') || pathname === '/api';
 
-  // Demo build: the public homepage was removed, so the bare root goes straight to the admin panel.
+  // The public homepage was removed, so the bare root goes to the student dashboard
+  // (a visitor without a session is bounced on to /login by the protected-path check below).
+  // /admin is reached ONLY by opening an /admin URL (or the admin.<domain> host) directly.
   if (!isAdminHost && pathname === '/') {
-    return NextResponse.redirect(new URL('/admin', request.url), 307);
+    return NextResponse.redirect(new URL('/dashboard', request.url), 307);
   }
 
   // CUSTOM-DOMAIN COMPATIBILITY:
