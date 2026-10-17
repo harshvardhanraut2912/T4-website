@@ -1,5 +1,8 @@
 // 📂 SAVE AT: app/api/ultimate/answer/route.js   (REPLACE)
 //
+// NOTE (v3): the browser now reveals the answer instantly from its prefetched, encrypted copy and
+// calls this route in the BACKGROUND only to count the answer and advance the session.
+//
 // POST { token, q_id, selected: 0..3 | null }
 //   selected = null -> "Skip": nothing is counted, no answer key is released.
 //   otherwise       -> the answer is checked HERE (the server decides right/wrong and bumps the
@@ -8,7 +11,7 @@
 //                      ciphertext. The next question is NOT sent here (it is prefetched via
 //                      /api/ultimate/next), so this call is tiny and fast.
 import { authenticateStudent, respond, getCatalog, fetchQuestions, supabaseAdmin } from '@/lib/training';
-import { isUltimateToken, loadUltimateSession, answerKeyFor, pendingEntry } from '@/lib/ultimate';
+import { isUltimateToken, loadUltimateSession, pendingEntry } from '@/lib/ultimate';
 
 export const dynamic = 'force-dynamic';
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -59,7 +62,7 @@ export async function POST(request) {
     if (claim.data !== true) return respond({ error: 'stale', message: 'This question was already answered.' }, 409);
 
     if (skip) return respond({ skipped: true });
-    return respond({ skipped: false, is_correct: isCorrect, ans_key: answerKeyFor(token, qId).toString('base64') });
+    return respond({ skipped: false, is_correct: isCorrect });
   } catch (err) {
     console.error('Ultimate answer error:', err);
     return respond({ error: 'Could not submit your answer. Please try again.' }, 500);

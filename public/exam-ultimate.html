@@ -320,6 +320,16 @@
         if (url) img.src = url;
       }));
     }
+    // Pre-loads the images of the (still encrypted) solution into the image cache so the reveal on
+    // Submit is instant. The decrypted text is discarded at once; only the ciphertext is kept.
+    async function warmSolutionImages(bundle) {
+      try {
+        const ans = await decryptWith(sessionKey, bundle.answer);
+        const tmp = document.createElement('div'); tmp.innerHTML = ans.solution_html || '';
+        const srcs = Array.from(tmp.querySelectorAll('img[src^="http"]')).map((i) => i.getAttribute('src'));
+        await Promise.all(srcs.map(proxyImg));
+      } catch (e) { /* best effort */ }
+    }
     // Decrypts the question and prepares its HTML (images already swapped to blob: URLs) away from
     // the screen, so showing it later is instant.
     async function prepareView(bundle) {
@@ -333,6 +343,7 @@
         holder.appendChild(o); opts.push(o);
       }
       await hardenImages(holder);
+      warmSolutionImages(bundle);     // fire and forget: solution images are cached before Submit
       return { bundle, payload, qHtml: q.innerHTML, optHtml: opts.map((o) => o.innerHTML) };
     }
 
@@ -480,6 +491,7 @@
     // Shows the next question: instantly if it was prefetched, otherwise waits for it.
     async function advance() {
       setPhase('submitting');
+      if (needResync) { try { await skipChain; } catch (e) {} if (needResync) { await loadCurrent(); return; } }
       if (!queue.length) {
         showLoader(true);
         await ensureQueue();
@@ -501,43 +513,41 @@
       const sel = document.querySelector('input[name="ult-option"]:checked');
       if (!sel) return;
       const idx = parseInt(sel.value, 10);
-      stopClock(); setPhase('submitting');
-      try { await skipChain; } catch (e) {}
-      if (needResync) { await loadCurrent(); return; }
+      stopClock();
 
-      let out;
-      try { out = await postJson('/api/ultimate/answer', { token, q_id: cur.bundle.q_id, selected: idx }); } catch (e) { out = null; }
-      const back = (msg) => { startClock(); setPhase('answering'); if (msg) alert(msg); };
-      if (!out) { back('Connection problem. Please try again.'); return; }
-      const { res, data } = out;
-      if (res.status === 409) {
-        if (data.error === 'unavailable') { back(data.message || 'This question is unavailable. Please skip it.'); return; }
-        await loadCurrent(); return;          // already answered elsewhere (double click / other tab)
-      }
-      if (!res.ok || !data.ans_key) { back(data.error || 'Could not submit your answer. Please try again.'); return; }
-
-      // The answer + solution were already here as ciphertext; the server just released the key.
+      // Open the answer + solution we already hold (encrypted until this moment): no network wait.
       let ans;
-      try { ans = await decryptWith(await importKey(data.ans_key), cur.bundle.answer); }
-      catch (e) { console.error(e); await loadCurrent(); return; }
+      try { ans = await decryptWith(sessionKey, cur.bundle.answer); }
+      catch (e) { console.error(e); startClock(); setPhase('answering'); alert('Could not open this question. Please skip it.'); return; }
 
+      const qid = cur.bundle.q_id;
+      const isCorrect = LETTERS[idx] === ans.correct_key;
       const correctIdx = LETTERS.indexOf(ans.correct_key);
+      setPhase('answered');
+
+      // Count it on the server in the background (the server re-checks the option itself).
+      // Requests stay in order; if one fails the page re-syncs with the server on "Next".
+      skipChain = skipChain
+        .then(() => postJson('/api/ultimate/answer', { token, q_id: qid, selected: idx }))
+        .then(({ res }) => { if (res.status === 401) location.replace('/login'); else if (!res.ok) needResync = true; })
+        .catch(() => { needResync = true; });
+
       document.querySelectorAll('.option-row').forEach((row) => {
         const i = parseInt(row.dataset.i, 10);
         const badge = $(`badge-${i}`);
         if (i === correctIdx) {
-          row.classList.add('is-correct'); badge.textContent = data.is_correct ? '✓ Correct' : '✓ Correct answer';
-          if (data.is_correct) row.classList.add('is-yours-ok');
+          row.classList.add('is-correct'); badge.textContent = isCorrect ? '✓ Correct' : '✓ Correct answer';
+          if (isCorrect) row.classList.add('is-yours-ok');
         } else if (i === idx) {
           row.classList.add('is-wrong'); badge.textContent = '✗ Your answer';
         }
       });
-      $('ui-result').className = `result-banner ${data.is_correct ? 'ok' : 'bad'}`;
-      $('ui-result-icon').textContent = data.is_correct ? 'check_circle' : 'cancel';
-      $('ui-result-text').textContent = data.is_correct ? 'Correct!' : `Incorrect — the correct answer is option ${ans.correct_key}.`;
+      $('ui-result').className = `result-banner ${isCorrect ? 'ok' : 'bad'}`;
+      $('ui-result-icon').textContent = isCorrect ? 'check_circle' : 'cancel';
+      $('ui-result-text').textContent = isCorrect ? 'Correct!' : `Incorrect — the correct answer is option ${ans.correct_key}.`;
 
-      if (data.is_correct) tally.ok += 1; else tally.bad += 1;
-      recent.push({ n: qNumber, t: data.is_correct ? 'ok' : 'bad' });
+      if (isCorrect) tally.ok += 1; else tally.bad += 1;
+      recent.push({ n: qNumber, t: isCorrect ? 'ok' : 'bad' });
       renderStats();
 
       const solBox = $('ui-solution'); const solBody = $('ui-solution-body');
@@ -547,9 +557,8 @@
         hardenImages(solBody);
       } else { solBody.textContent = 'No written solution is available for this question yet.'; }
 
-      setPhase('answered');
       $('ui-canvas').scrollTo({ top: $('ui-result').offsetTop - 12, behavior: 'smooth' });
-      ensureQueue();                          // the held "next" is now current on the server: fetch one more
+      ensureQueue();                          // waits for the background submit, then fetches one more
     }
 
     // Skip: nothing counted, no answer revealed. The next question is already here, so it opens at
