@@ -1,0 +1,91 @@
+/* components/admin/adminShell.module.css  (new file)
+   Admin navbar (same structure / sizing / fonts as the main-site homepage navbar,
+   with square buttons and no decorative animation) + the admin sign-in gate. */
+
+.root,.navWrap{--navy:#007aff;--red:#ff3b30;--glass:#f7f7fa;--ink:#1c1c1e;--muted:#6e6e73;--line:#e5e5ea;--nav-h:80px;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif}
+.root{min-height:100vh;background:#f2f2f7;color:var(--ink)}
+.root *,.navWrap *,.gateWrap *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif}
+.navWrap .brandText,.gateBrandText,.gateCard h2{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif}
+
+/* ===== NAVBAR (solid white, same geometry as the homepage) ===== */
+.nav{height:var(--nav-h);background:#fff;border-bottom:1px solid #e5e5ea;box-shadow:0 2px 14px rgba(0,0,0,.08);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 40px;position:fixed;top:0;left:0;width:100%;z-index:1000}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brandLogo{height:54px;width:54px;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line);padding:2px}
+.brandWords{display:flex;flex-direction:column;line-height:1.1}
+.brandText{font-weight:800;font-size:21px;letter-spacing:-.02em;color:var(--navy)}
+.brandTag{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-top:3px}
+.links{display:flex;gap:32px;align-items:center}
+.link{text-decoration:none;color:#3a3a3c;font-size:14px;font-weight:700;position:relative;transition:color .15s}
+.link:hover,.linkActive{color:var(--navy)}
+.link::after{content:"";position:absolute;left:0;bottom:-4px;height:2px;width:0;background:var(--navy);transition:width .2s ease}
+.link:hover::after,.linkActive::after{width:100%}
+
+.authZone{display:flex;justify-content:flex-end;position:relative}
+.avatar{height:42px;width:42px;border-radius:10px;background:var(--glass);border:1px solid var(--line);color:var(--navy);font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;text-transform:uppercase;padding:0}
+.avatar:hover{border-color:var(--navy)}
+.menu{position:absolute;top:54px;right:0;width:240px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,.12);display:none;flex-direction:column;overflow:hidden;z-index:1100}
+.menu.on{display:flex}
+.menuHead{padding:14px 16px;background:var(--glass);border-bottom:1px solid var(--line)}
+.menuEmail{font-size:13px;font-weight:700;color:var(--ink);word-break:break-all}
+.menuRole{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.menuItem{padding:13px 16px;font-size:14px;font-weight:600;text-decoration:none;color:var(--ink);border:0;border-bottom:1px solid var(--line);background:none;text-align:left;cursor:pointer;font-family:inherit;display:block;width:100%}
+.menuItem:last-child{border-bottom:0}
+.menuItem:hover{background:var(--glass);color:var(--navy)}
+.menuOut{color:#d70015}
+.menuOut:disabled{opacity:.6;cursor:default}
+.burger,.overlay,.drawer{display:none}
+
+@media(max-width:900px){
+  .root,.navWrap{--nav-h:58px}
+  .nav{display:flex;gap:10px;padding:0 12px;height:58px}
+  .brand{gap:9px}.brandLogo{height:40px;width:40px;border-radius:10px}.brandText{font-size:17px}.brandTag{font-size:9.5px;margin-top:2px}
+  .links{display:none}
+  .authZone{margin-left:auto}
+  .menu{right:-4px}
+  .burger{display:flex;order:3;background:none;border:0;padding:4px;cursor:pointer}
+  .overlay{display:block;position:fixed;inset:0;background:rgba(12,20,56,.55);z-index:1001;opacity:0;pointer-events:none}
+  .overlay.on{opacity:1;pointer-events:auto}
+  .drawer{display:flex;flex-direction:column;gap:16px;position:fixed;top:0;bottom:0;left:-75%;width:70%;min-width:260px;padding:80px 24px 24px;background:#fff;border-right:1px solid var(--line);z-index:1002;transition:left .2s ease}
+  .drawer.on{left:0}
+  .drawer .link{font-size:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .drawer .link::after{display:none}
+  .drawer .menuItem{padding:0 0 12px;font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){.link::after,.drawer{transition:none}}
+
+/* ===== SIGN-IN GATE / SECURITY CHECK ===== */
+.gateWrap{min-height:100vh;background:#f2f2f7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:18px;color:#1c1c1e;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif}
+.gateBrand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.gateLogo{height:52px;width:52px;object-fit:contain;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:1px solid #e5e5ea;padding:2px}
+.gateBrandText{font-weight:800;font-size:20px;letter-spacing:-.02em;color:#007aff;line-height:1.1}
+.gateBrandTag{display:block;font-size:11px;font-weight:600;color:#6e6e73;letter-spacing:.05em;text-transform:uppercase;margin-top:3px;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif}
+.gateCard{width:100%;max-width:400px;background:#fff;border:0;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.06)}
+.gateCard h2{margin:0 0 6px;font-size:20px;font-weight:800;color:#007aff}
+.gateSub{margin:0 0 20px;color:#6e6e73;font-size:14px;line-height:1.5}
+.gateField{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.gateField label{font-size:12px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.04em}
+.gateField input{height:46px;padding:0 14px;border:1px solid #d1d1d6;border-radius:12px;font-size:14px;color:#1c1c1e;background:#fff;outline:none}
+.gateField input:focus{border-color:#007aff;box-shadow:0 0 0 4px rgba(0,122,255,.15)}
+.gateError{margin:0 0 14px;padding:10px 12px;border:0;background:#fff1f0;color:#d70015;font-size:13px;border-radius:12px}
+.gateBtn{width:100%;height:48px;border:0;border-radius:12px;background:#007aff;color:#fff;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,122,255,.3);transition:background .15s ease,transform .12s ease}.gateBtn:active{transform:scale(.98)}
+.gateBtn:hover{background:#0a6fe0}
+.gateBtn:disabled{opacity:.6;cursor:default}
+.gateText{margin:0;color:#6e6e73;font-size:14px;font-weight:600}
+.gateFoot{margin:0;font-size:12px;color:#6e6e73}
+
+/* iOS-inspired legacy admin navbar compatibility */
+.brandMark{height:38px;width:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#007aff,#5ac8fa);color:#fff;font-weight:800;font-size:18px;box-shadow:0 5px 14px rgba(0,122,255,.22)}
+
+/* ===== T4 Academy: horizontal logo already contains the name ===== */
+.brandLogo{height:42px;width:auto;max-width:190px;background:transparent;border:0;border-radius:0;padding:0}
+.brandWords{padding-left:12px;border-left:1px solid var(--line)}
+.brandTag{margin-top:0;color:var(--navy);font-weight:700}
+.gateLogo{height:46px;width:auto;max-width:200px;background:transparent;border:0;border-radius:0;box-shadow:none;padding:0}
+@media(max-width:900px){.brandLogo{height:34px;width:auto;border-radius:0}.brandWords{display:none}}
+:global([data-theme="dark"]) .brandLogo,:global([data-theme="dark"]) .gateLogo{background:#fff;border-radius:8px;padding:3px 8px}
+
+/* ===== iOS: translucent blurred top bar ===== */
+.nav{background:rgba(255,255,255,.78);-webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);border-bottom:1px solid rgba(60,60,67,.12);box-shadow:none}
+.gateCard{border-radius:22px;border:1px solid rgba(60,60,67,.1);box-shadow:0 20px 60px rgba(0,0,0,.12)}
+.gateBtn{border-radius:14px;background:#007aff}
+.brandTag{color:#007aff}

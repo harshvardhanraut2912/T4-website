@@ -1,0 +1,69 @@
+/* components/site/login.module.css  (new file)
+   Self-contained T4 Academy sign-in page. Palette taken from the T4 logo:
+   deep blue + brand orange. Light and dark mode follow [data-theme]. */
+
+.root{--t4-navy:#0b3a68;--t4-blue:#1b86d1;--t4-orange:#f28c1e;--page:#f4f7fb;--surf:#ffffff;--ink:#0f172a;--muted:#5b6784;--line:#dfe6f0;--lift:0 18px 40px rgba(11,58,104,.12);
+  min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;background:var(--page);color:var(--ink);font-family:var(--font-body),Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+:global([data-theme="dark"]) .root{--page:#08111f;--surf:#0d1a2e;--ink:#e8eefb;--muted:#9db0cc;--line:#1c2d49;--lift:0 18px 40px rgba(0,0,0,.45)}
+.root *{box-sizing:border-box}
+
+/* ---------- brand panel ---------- */
+.panel{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:44px 56px;color:#fff;
+  background:linear-gradient(160deg,#071f3a 0%,#0b3a68 58%,#1b6fb4 100%)}
+.panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 85%);mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.panel::after{content:"";position:absolute;right:-120px;bottom:-120px;width:380px;height:380px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(242,140,30,.35),transparent 68%)}
+.brand{position:relative;z-index:2;display:inline-flex;align-items:center;gap:14px;text-decoration:none;color:#fff}
+.brandLogo{height:52px;width:auto;max-width:180px;object-fit:contain;background:#fff;border-radius:12px;padding:6px 10px}
+.brandTag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#cfe3f7}
+.mid{position:relative;z-index:2;max-width:31rem}
+.pill{display:inline-block;padding:6px 16px;margin-bottom:18px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.h1{margin:0 0 14px;font-weight:800;font-size:clamp(2rem,3.3vw,2.8rem);line-height:1.1;letter-spacing:-.03em;color:#fff}
+.h1 em{font-style:normal;color:var(--t4-orange)}
+.lead{margin:0 0 28px;color:rgba(255,255,255,.82);line-height:1.7}
+.features{list-style:none;margin:0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.18);display:grid;gap:16px}
+.features li{display:flex;gap:14px;align-items:flex-start}
+.featIcon{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#ffc27a}
+.features li>span:last-child{display:flex;flex-direction:column}
+.features b{font-size:.93rem}
+.features i{font-style:normal;font-size:.82rem;color:rgba(255,255,255,.7)}
+.copy{position:relative;z-index:2;margin:0;font-size:.78rem;color:rgba(255,255,255,.6)}
+
+/* ---------- sign-in side ---------- */
+.side{position:relative;display:flex;align-items:center;justify-content:center;padding:84px 40px 48px}
+.back{position:absolute;top:28px;left:32px;display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-weight:700;font-size:.88rem;text-decoration:none}
+.back:hover{color:var(--t4-blue)}
+.theme{position:absolute;top:22px;right:28px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:var(--surf);color:var(--t4-navy);border:1.5px solid var(--line);transition:transform .25s,border-color .25s,box-shadow .25s}
+:global([data-theme="dark"]) .theme{color:#9cc8f0}
+.theme:hover{transform:translateY(-2px);border-color:var(--t4-blue);box-shadow:var(--lift)}
+.card{width:100%;max-width:25rem;background:var(--surf);border:1px solid var(--line);border-top:4px solid var(--t4-orange);border-radius:20px;padding:34px 30px;box-shadow:var(--lift)}
+.cardLogo{display:block;height:46px;width:auto;margin:0 0 22px;object-fit:contain}
+.head{margin:0 0 8px;font-size:1.8rem;letter-spacing:-.03em;color:var(--t4-navy)}
+:global([data-theme="dark"]) .head{color:#e8eefb}
+.sub{margin:0 0 26px;color:var(--muted);line-height:1.65;font-size:.94rem}
+.google{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:15px 22px;border-radius:12px;cursor:pointer;font:inherit;font-weight:800;font-size:1rem;color:#fff;background:var(--t4-navy);border:0;box-shadow:0 10px 22px rgba(11,58,104,.25);transition:transform .25s,box-shadow .25s,background .25s}
+.google:hover:not(:disabled){background:#0e4a85;transform:translateY(-2px);box-shadow:0 14px 28px rgba(11,58,104,.32)}
+.google:disabled{opacity:.75;cursor:progress}
+.gIcon{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#fff}
+.spin{width:19px;height:19px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:t4spin .7s linear infinite}
+@keyframes t4spin{to{transform:rotate(360deg)}}
+.error{margin:14px 0 0;padding:11px 14px;border-radius:12px;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.35);color:#c62828;font-size:.9rem;font-weight:600}
+.trust{list-style:none;margin:24px 0 0;padding:20px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px}
+.trust li{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.78rem;font-weight:700}
+.trust svg{color:var(--t4-blue)}
+.note{margin:20px 0 0;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.6}
+.link{color:var(--t4-blue);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--t4-orange)}
+
+@media(max-width:900px){
+  .root{grid-template-columns:1fr}
+  .panel{padding:26px 22px 28px;gap:16px}
+  .features,.copy{display:none}
+  .lead{margin-bottom:0}
+  .side{padding:72px 18px 40px;align-items:flex-start}
+  .back{left:20px}.theme{right:16px}
+}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}.google,.theme{transition:none}}
+:global([data-theme="dark"]) .cardLogo{background:#fff;border-radius:10px;padding:6px 10px}

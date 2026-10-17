@@ -1,0 +1,84 @@
+/* app/admin/exams/omr/omr.module.css  (new file)
+   "Generate OMR sheet" popup. Same flat look as the PDF popup (base classes .btn / .input / .label /
+   .err come from ../exams.module.css). Also holds the OMR column styles for the Exams table. */
+
+.wrap{max-width:760px;margin:0 auto;padding:24px 20px 40px;font-family:var(--font-body),system-ui,sans-serif;color:#1c1c1e}
+.head{display:flex;align-items:center;gap:14px;padding:16px 18px;margin-bottom:18px;border-radius:10px;background:linear-gradient(120deg,#eef6ee 0%,#e6f7fb 100%);border:1px solid #dff0e3;border-left:5px solid #34c759}
+.headIcon{flex:none;width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:linear-gradient(135deg,#248a3d,#34c759);color:#fff;font-size:13px;font-weight:800;letter-spacing:.04em}
+
+.steps{display:flex;gap:10px;margin:0 0 14px;padding:0;list-style:none}
+.stepDot{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border:1px solid #d1d1d6;border-radius:999px;background:#fff;color:#8e8e93;font-size:13px;font-weight:700}
+.stepDot span{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#efeff4;color:#8e8e93;font-size:12px}
+.stepOn{border-color:#34c759;color:#1c1c1e}
+.stepOn span{background:#34c759;color:#fff}
+.stepDone{color:#248a3d;border-color:#b6e8c4}
+.stepDone span{background:#b6e8c4;color:#248a3d}
+
+.card{display:flex;flex-direction:column;gap:18px;padding:20px;border-top:3px solid #34c759}
+.field{display:flex;flex-direction:column;min-width:0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+
+.seg{display:inline-flex;align-self:flex-start;border:1px solid #d1d1d6;border-radius:10px;overflow:hidden}
+.segBtn{height:40px;padding:0 16px;border:0;border-right:1px solid #d1d1d6;background:#fff;color:#248a3d;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.segBtn:last-child{border-right:0}
+.segBtn:hover{background:#f2f2f7}
+.segOn,.segOn:hover{background:linear-gradient(135deg,#248a3d,#34c759);color:#fff}
+.dateInput{margin-top:8px;max-width:220px}
+.hint{margin:6px 0 0;min-height:16px;font-size:12.5px;color:#6e6e73}
+
+/* ---- logo picker: same visual language as the question-paper PDF generator ---- */
+.logoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.logoTile{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;padding:10px 8px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#3a3a3c;font:inherit;cursor:pointer;text-align:center}
+.logoTile:hover{background:#eaf3ff;border-color:#007aff}
+.logoOn,.logoOn:hover{border-color:#007aff;background:#eaf3ff;box-shadow:0 0 0 2px rgba(47,109,240,.25)}
+.logoImg{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:10px}
+.logoPlus{width:64px;height:64px;display:flex;align-items:center;justify-content:center;border:2px dashed #9db4e6;border-radius:10px;color:#007aff;font-size:26px;font-weight:700}
+.logoLabel{font-size:12px;font-weight:700;line-height:1.25;word-break:break-word}
+.logoErr{margin-top:8px}
+.note{margin:0;font-size:12.5px;color:#6e6e73}
+
+/* ---- style picker ---- */
+.styleGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.styleCard{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 10px 14px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#3a3a3c;font:inherit;text-align:center;cursor:pointer}
+.styleCard:hover{background:#f4fbf6;border-color:#34c759}
+.styleOn,.styleOn:hover{border-color:#34c759;background:#f4fbf6;box-shadow:0 0 0 2px rgba(52,199,89,.28)}
+.stylePrev{width:100%;height:auto;padding:6px;border:1px solid #e5e5ea;border-radius:6px;background:#fff}
+.styleName{font-size:15px;font-weight:800;color:#1c1c1e}
+.styleMeta{font-size:12px;font-weight:700;color:#248a3d}
+.styleBlurb{font-size:12px;line-height:1.4;color:#6e6e73}
+
+.summary{padding:10px 14px;border:1px solid #e5e5ea;border-radius:10px;background:#f7f7fa;font-size:13.5px}
+.warn{color:#d70015;font-weight:700}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:4px}
+.actions button{flex:1 1 180px}
+.btnMain{background:linear-gradient(135deg,#248a3d,#34c759);border-color:#248a3d;color:#fff}
+.btnMain:hover{background:linear-gradient(135deg,#1b6e30,#248a3d);border-color:#1b6e30}
+
+/* ---- result ---- */
+.resultCard{border-top-color:#34c759}
+.resultTop{display:flex;align-items:center;gap:14px}
+.tick{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#34c759;color:#fff;font-size:22px;font-weight:800}
+.resultTitle{margin:0;font-size:18px;font-weight:800;color:#1c1c1e}
+.resultName{margin:2px 0 0;font-size:13px;color:#6e6e73;word-break:break-all}
+.frame{width:100%;height:56vh;min-height:360px;border:1px solid #d1d1d6;border-radius:10px;background:#efeff4}
+.threeBtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.big{display:flex;align-items:center;justify-content:center;height:52px;border:0;border-radius:10px;color:#fff;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer}
+.big:hover{filter:brightness(1.08)}
+.bigDownload{background:linear-gradient(135deg,#007aff,#007aff)}
+.bigPrint{background:linear-gradient(135deg,#c93400,#ff9500)}
+.bigJson{background:linear-gradient(135deg,#30b0c7,#30b0c7)}
+
+/* ---- Exams table column (used by ../page.js) ---- */
+.thOmr{width:96px;text-align:center!important}
+.tdOmr{text-align:center}
+.omrBtn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#248a3d;cursor:pointer}
+.omrBtn:hover{background:#eafaf0;border-color:#34c759}
+
+@media (max-width:640px){
+  .row{grid-template-columns:1fr}
+  .styleGrid{grid-template-columns:1fr}
+  .threeBtns{grid-template-columns:1fr}
+  .wrap{padding:16px 14px 32px}
+  .thOmr{width:56px;font-size:0}
+}

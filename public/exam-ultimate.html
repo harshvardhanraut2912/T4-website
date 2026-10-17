@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<!-- 📂 SAVE AT: public/exam-ultimate.html   (NEW FILE)
+     Ultimate Practice: same look as the exam screen, but one question at a time (the next one is prefetched); the answer +
+     solution come encrypted with the question and open only after Submit, and nothing is kept as history. The server only
+     bumps a per-chapter correct/wrong counter. Served at /exam-ultimate.html?token=ult_... -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Practice</title>
+  <link rel="icon" type="image/png" href="/images/other_images/class-logo.png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body, html { height: 100%; overflow: hidden; background-color: #f4f6f9; color: #333; }
+
+    .app-container { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+    .top-header { background: #fff; border-bottom: 2px solid #e5e5e5; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; height: 55px; gap: 12px; }
+    .test-title { font-size: 16px; font-weight: 600; color: #152561; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .timer-badge { background: #d3ffe0; color: #12732d; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 15px; letter-spacing: .5px; display: inline-block; border: 1px solid #b2f1c3; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .sections-bar { background: #f8f9fa; border-bottom: 1px solid #e5e5e5; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 45px; gap: 12px; }
+    .chapter-tag { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 600; color: #152561; }
+    .chapter-tag .subj { background: #152561; color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; flex-shrink: 0; }
+    .chapter-tag .chap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .utility-actions { display: flex; gap: 15px; align-items: center; flex-shrink: 0; }
+    .util-link { font-size: 13px; color: #5b626a; display: flex; align-items: center; gap: 4px; cursor: pointer; background: none; border: none; }
+    .util-link i { font-size: 16px; }
+    .util-link#btn-report-error, .util-link#btn-report-error i { color: #c9302c; }
+
+    .main-viewport { display: flex; flex: 1; overflow: hidden; }
+    .question-section { width: 77%; display: flex; flex-direction: column; background: #fff; border-right: 1px solid #e5e5e5; height: 100%; }
+    .question-meta-bar { padding: 12px 24px; border-bottom: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: center; background: #fafbfc; }
+    .question-number-label { font-size: 15px; font-weight: 700; color: #393f41; }
+    .marking-scheme { font-size: 12px; color: #777; }
+    .fg-green { color: #12732d; font-weight: 600; }
+    .fg-red { color: #c9302c; font-weight: 600; }
+
+    .question-body-canvas { flex: 1; padding: 24px 28px; overflow-y: auto; position: relative; }
+    #ui-question-content { line-height: 1.7; color: #1a1a1a; margin-bottom: 16px; font-size: calc(17px * var(--zoom-factor)); }
+    #ui-question-content p { margin: 0 0 10px; }
+    #ui-question-content img, .option-text img, .solution-body img { width: auto; max-width: 100%; height: auto; max-height: calc(280px * var(--zoom-factor)); object-fit: contain; display: block; margin: 14px 0; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; padding: 8px; }
+    :root { --zoom-factor: 1; }
+
+    .options-block { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+    .option-row { display: flex; align-items: flex-start; padding: 14px 18px; border: 1px solid #dce1e5; border-radius: 6px; cursor: pointer; transition: background-color .15s, border-color .15s; position: relative; }
+    .option-row:hover { background: #f4f7f9; border-color: #b9c4cc; }
+    .option-row input[type="radio"] { width: 18px; height: 18px; margin-right: 14px; margin-top: 3px; flex-shrink: 0; cursor: pointer; accent-color: #152561; }
+    .option-text { font-size: calc(16px * var(--zoom-factor)); line-height: 1.6; font-weight: 500; color: #333; flex: 1; }
+    .option-text p { margin: 0; }
+    .opt-badge { margin-left: 12px; font-size: 11.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; white-space: nowrap; align-self: center; display: none; }
+
+    /* Result states (after Submit) */
+    .options-block.locked .option-row { cursor: default; }
+    .options-block.locked .option-row:hover { background: #fff; border-color: #dce1e5; }
+    .options-block.locked .option-row input { pointer-events: none; }
+    .option-row.is-correct { border-color: #61b131 !important; background: #effaf0 !important; }
+    .option-row.is-correct .opt-badge { display: inline-block; background: #61b131; color: #fff; }
+    .option-row.is-wrong { border-color: #e0463f !important; background: #fdeeed !important; }
+    .option-row.is-wrong .opt-badge { display: inline-block; background: #e0463f; color: #fff; }
+    .option-row.is-yours-ok .opt-badge::after { content: " · Your answer"; }
+    .option-row.is-wrong .opt-badge::after { content: ""; }
+
+    .result-banner { display: none; max-width: 720px; margin: 18px 0 0; padding: 12px 16px; border-radius: 8px; font-weight: 700; font-size: 14.5px; align-items: center; gap: 8px; }
+    .result-banner.ok { display: flex; background: #effaf0; color: #12732d; border: 1px solid #b2f1c3; }
+    .result-banner.bad { display: flex; background: #fdeeed; color: #b91c1c; border: 1px solid #f5c6cb; }
+    .result-banner i { font-size: 22px; }
+
+    .solution-box { display: none; max-width: 720px; margin: 16px 0 8px; border: 1px solid #dbe3f3; border-radius: 10px; background: #f7f9ff; }
+    .solution-box.show { display: block; }
+    .solution-head { padding: 10px 16px; font-size: 12.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #152561; border-bottom: 1px solid #dbe3f3; display: flex; align-items: center; gap: 6px; }
+    .solution-head i { font-size: 18px; }
+    .solution-body { padding: 14px 16px; line-height: 1.7; font-size: calc(15.5px * var(--zoom-factor)); color: #1f2937; overflow-x: auto; }
+    .solution-body p { margin: 0 0 10px; }
+
+    .canvas-loader { position: absolute; inset: 0; display: none; justify-content: center; align-items: center; background: rgba(255,255,255,.92); z-index: 5; }
+    .canvas-loader.show { display: flex; }
+    .canvas-error { color: #b91c1c; font-size: 14.5px; line-height: 1.6; max-width: 560px; }
+    .canvas-error button { margin-top: 12px; }
+
+    .control-footer { height: 60px; border-top: 1px solid #e5e5e5; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; background: #fafbfc; gap: 10px; }
+    .footer-btn { padding: 10px 22px; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer; border: 1px solid transparent; transition: background-color .1s; }
+    .footer-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary { background: #fff; border-color: #ccc; color: #444; }
+    .btn-secondary:hover:not(:disabled) { background: #f5f5f5; }
+    .btn-primary { background: #337ab7; border-color: #2e6da4; color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: #286090; }
+    .btn-next { background: #5cb85c; border-color: #4cae4c; color: #fff; text-transform: uppercase; letter-spacing: .3px; }
+    .btn-next:hover:not(:disabled) { background: #449d44; }
+    .btn-danger { background: #d9534f; border-color: #d43f3a; color: #fff; }
+    .btn-danger:hover { background: #c9302c; }
+    .kbd-hint { font-size: 11.5px; color: #8a93a0; }
+
+    /* Right panel: this sitting */
+    .sidebar-panel { width: 23%; background: #fff; display: flex; flex-direction: column; height: 100%; border-left: 1px solid #dcdfe4; }
+    .stat-head { padding: 16px 16px 6px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; }
+    .stat-grid { padding: 8px 14px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-bottom: 1px solid #e2e6ea; }
+    .stat-cell { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; }
+    .stat-cell b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; }
+    .stat-cell span { font-size: 11px; color: #6b7280; font-weight: 600; }
+    .stat-cell.ok b { color: #12732d; } .stat-cell.bad b { color: #c9302c; }
+    .stat-cell.wide { grid-column: span 2; }
+    .recent-wrap { flex: 1; overflow-y: auto; padding: 14px; background: #f8f9fa; }
+    .recent-title { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 10px; }
+    .dots { display: flex; flex-wrap: wrap; gap: 6px; }
+    .dot { width: 22px; height: 22px; border-radius: 50%; font-size: 10px; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .dot.ok { background: #61b131; } .dot.bad { background: #f05050; } .dot.skip { background: #b8bfc9; }
+    .note { margin-top: 14px; font-size: 12px; color: #6b7280; line-height: 1.5; }
+    .sidebar-footer { padding: 12px 15px; background: #e4e8f0; border-top: 1px solid #dcdfe4; }
+    .btn-end { width: 100%; background: #152561; border: 1px solid #152561; color: #fff; padding: 12px; font-size: 13px; font-weight: 700; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+    .btn-end:hover { background: #0f1c4a; }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; }
+    .modal-card { background: #fff; border-radius: 8px; width: 450px; max-width: 90%; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.2); text-align: center; }
+    .modal-card h3 { color: #152561; margin-bottom: 12px; }
+    .modal-card p { font-size: 14px; color: #555; margin-bottom: 20px; }
+    .report-textarea { width: 100%; height: 90px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: none; margin-bottom: 15px; font-size: 13px; font-family: inherit; }
+
+    .boot { position: fixed; inset: 0; z-index: 9000; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; color: #152561; font-weight: 600; }
+
+    @media screen and (max-width: 920px) {
+      .main-viewport { flex-direction: column; position: relative; }
+      .question-section { width: 100% !important; border-right: none; }
+      .sidebar-panel { position: absolute; top: 0; right: -100%; width: 230px !important; height: 100%; z-index: 9999; box-shadow: -4px 0 12px rgba(0,0,0,.15); transition: right .25s cubic-bezier(.4,0,.2,1); }
+      .sidebar-panel.mobile-drawer-open { right: 0 !important; }
+      .top-header { padding: 8px 12px; } .test-title { font-size: 14px; }
+      .timer-badge { font-size: 13px; padding: 5px 12px; }
+      .sections-bar { padding: 0 12px; overflow-x: auto; }
+      .question-meta-bar { padding: 8px 14px; } .question-number-label { font-size: 12px; } .marking-scheme { font-size: 10px; }
+      .question-body-canvas { padding: 14px; }
+      #ui-question-content { font-size: calc(15px * var(--zoom-factor)); line-height: 1.6; }
+      .option-row { padding: 8px 12px; } .option-text { font-size: calc(14px * var(--zoom-factor)); }
+      #ui-question-content img, .option-text img, .solution-body img { max-height: calc(190px * var(--zoom-factor)); }
+      .control-footer { height: auto; padding: 12px 14px; }
+      .control-footer > div { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 8px; }
+      .control-footer .footer-btn { width: 100%; padding: 12px 6px; }
+      .kbd-hint { display: none; }
+      .util-link#btn-report-error { background: #fdecea; border: 1px solid #f5c6cb; border-radius: 4px; width: 28px; height: 28px; padding: 0; justify-content: center; }
+      .util-link#btn-report-error .report-error-label { display: none; }
+      #ui-mobile-hamburger-toggle { display: block !important; }
+      .micro-canvas-zoom-wrapper { flex-shrink: 0; }
+      #ui-global-image-zoombar { width: 70px !important; }
+    }
+
+    body { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+    input, textarea { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
+    img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+  <div class="boot" id="ui-boot">
+    <lottie-player src="/loading.json" background="transparent" speed="1" style="width: 130px; height: 130px;" loop autoplay></lottie-player>
+    <div>Getting your first question…</div>
+  </div>
+
+  <div class="app-container">
+    <header class="top-header">
+      <div class="test-title">♾ Ultimate Practice</div>
+      <div>
+        <span class="timer-badge">
+          <span style="font-size:11px; font-weight:500; text-transform:uppercase; margin-right:4px; vertical-align:middle;">This question:</span>
+          <span id="ui-clock">00:00</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="sections-bar">
+      <div class="chapter-tag"><span class="subj" id="ui-subject">—</span><span class="chap" id="ui-chapter">—</span></div>
+      <div class="utility-actions">
+        <div class="micro-canvas-zoom-wrapper" style="display:flex; align-items:center; gap:4px; border-right:1px solid #ccc; padding-right:10px; margin-right:5px;">
+          <i class="material-icons" style="font-size:14px; color:#64748b;">zoom_in</i>
+          <input type="range" id="ui-global-image-zoombar" min="0" max="100" value="50" style="width:60px; height:3px; cursor:pointer; accent-color:#152561;">
+        </div>
+        <button type="button" class="util-link" id="btn-report-error"><i class="material-icons">warning</i><span class="report-error-label">Report Error</span></button>
+      </div>
+    </div>
+
+    <main class="main-viewport">
+      <section class="question-section">
+        <div class="question-meta-bar">
+          <div class="question-number-label" id="ui-q-label">Question 1</div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="marking-scheme">Correct: <span class="fg-green" id="ui-live-ok">0</span> &nbsp;|&nbsp; Wrong: <span class="fg-red" id="ui-live-bad">0</span></div>
+            <button type="button" id="ui-mobile-hamburger-toggle" style="display:none; background:transparent; border:none; cursor:pointer; outline:none;">
+              <i class="material-icons" style="color:#152561; font-size:28px; display:block;">menu</i>
+            </button>
+          </div>
+        </div>
+
+        <div class="question-body-canvas" id="ui-canvas">
+          <div class="canvas-loader" id="ui-loader"><lottie-player src="/loading.json" background="transparent" speed="1" style="width:140px; height:140px;" loop autoplay></lottie-player></div>
+          <div id="ui-error" class="canvas-error" style="display:none;"></div>
+
+          <div id="ui-question-wrap">
+            <div id="ui-question-content"></div>
+
+            <div class="options-block" id="ui-options-block">
+              <label class="option-row" data-i="0"><input type="radio" name="ult-option" value="0"><span class="option-text" id="opt-0"></span><span class="opt-badge" id="badge-0"></span></label>
+              <label class="option-row" data-i="1"><input type="radio" name="ult-option" value="1"><span class="option-text" id="opt-1"></span><span class="opt-badge" id="badge-1"></span></label>
+              <label class="option-row" data-i="2"><input type="radio" name="ult-option" value="2"><span class="option-text" id="opt-2"></span><span class="opt-badge" id="badge-2"></span></label>
+              <label class="option-row" data-i="3"><input type="radio" name="ult-option" value="3"><span class="option-text" id="opt-3"></span><span class="opt-badge" id="badge-3"></span></label>
+            </div>
+
+            <div class="result-banner" id="ui-result"><i class="material-icons" id="ui-result-icon">check_circle</i><span id="ui-result-text"></span></div>
+
+            <div class="solution-box" id="ui-solution">
+              <div class="solution-head"><i class="material-icons">lightbulb</i> Solution</div>
+              <div class="solution-body" id="ui-solution-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="control-footer">
+          <div><button class="footer-btn btn-secondary" id="btn-skip">Skip</button></div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="kbd-hint" id="ui-kbd-hint">Keys: 1–4 select · Enter submit</span>
+            <button class="footer-btn btn-primary" id="btn-main" disabled>Submit</button>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="sidebar-panel" id="ui-sidebar">
+        <div class="stat-head">This sitting</div>
+        <div class="stat-grid">
+          <div class="stat-cell ok"><b id="st-ok">0</b><span>Correct</span></div>
+          <div class="stat-cell bad"><b id="st-bad">0</b><span>Wrong</span></div>
+          <div class="stat-cell wide"><b id="st-acc">—</b><span>Accuracy this sitting</span></div>
+        </div>
+        <div class="recent-wrap">
+          <div class="recent-title">Recent questions</div>
+          <div class="dots" id="ui-dots"></div>
+          <p class="note">Ultimate Practice never runs out. Your results are not saved as a history — only your correct / wrong count per chapter is added to your accuracy.</p>
+        </div>
+        <div class="sidebar-footer"><button class="btn-end" id="btn-end">End practice &amp; view accuracy</button></div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="ui-report-modal">
+    <div class="modal-card" style="border-top: 4px solid #d9534f;">
+      <h3 style="color:#d9534f; margin-bottom:8px;"><i class="material-icons" style="vertical-align:bottom;">error_outline</i> Report an Error</h3>
+      <p style="font-size:13px; color:#555; margin-bottom:15px;">Found a mistake in this question? Let us know.</p>
+      <textarea id="report-description" class="report-textarea" placeholder="Add a description of the error (Optional)..."></textarea>
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button class="footer-btn btn-secondary" onclick="closeReportModal()">Cancel</button>
+        <button class="footer-btn btn-danger" id="btn-submit-report" onclick="submitErrorReport()">Report Error</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    // ---- anti-copy (same as the exam screen) ----
+    const isEditable = (t) => t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('dragstart', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => { if (!isEditable(e.target)) e.preventDefault(); });
+    document.addEventListener('copy', (e) => { if (!isEditable(e.target)) e.preventDefault(); });
+    document.addEventListener('cut', (e) => { if (!isEditable(e.target)) e.preventDefault(); });
+
+    const $ = (id) => document.getElementById(id);
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const BACK_URL = '/dashboard/training/ultimate';
+    const STATS_URL = '/dashboard/training/ultimate?tab=accuracy';
+    const MAX_SEEN = 300;
+
+    const token = new URLSearchParams(location.search).get('token');
+    if (!token || !/^ult_[0-9a-f]{32}$/.test(token)) { location.replace(BACK_URL); return; }
+
+    // ---- everything below lives in memory only; nothing is saved in the browser ----
+    // A "bundle" = { q_id, question:{iv,data}, answer:{iv,data} }.
+    //   question : decryptable now (session key)
+    //   answer   : ciphertext only. Its key is returned by the server when the question is submitted.
+    let sessionKey = null;
+    let cur = null;               // question on screen: { payload, bundle, qHtml, optHtml }
+    const queue = [];             // prefetched upcoming questions: { bundle, view: Promise }
+    let fetching = null;          // running prefetch loop
+    let exhausted = false;        // server has no further usable question
+    let skipChain = Promise.resolve();
+    let needResync = false;
+    let phase = 'loading';        // loading | answering | submitting | answered | error
+    let qNumber = 0;
+    let seen = [];
+    const tally = { ok: 0, bad: 0 };
+    const recent = [];
+    let clockBase = 0, clockStart = 0, clockRunning = false;
+
+    // ---------------- crypto ----------------
+    const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+    const importKey = (s) => crypto.subtle.importKey('raw', b64(s), { name: 'AES-GCM' }, false, ['decrypt']);
+    async function decryptWith(key, chunk) {
+      const buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(chunk.iv) }, key, b64(chunk.data));
+      return JSON.parse(new TextDecoder().decode(buf));
+    }
+
+    // ---------------- images (through our own server, like the exam) ----------------
+    const imgCache = new Map();
+    async function proxyImg(src) {
+      if (imgCache.has(src)) return imgCache.get(src);
+      try {
+        const res = await fetch('/api/ultimate/image', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, src }),
+        });
+        if (!res.ok) throw new Error('proxy failed');
+        const url = URL.createObjectURL(await res.blob());
+        imgCache.set(src, url);
+        return url;
+      } catch (e) { return null; }
+    }
+    async function hardenImages(root) {
+      const imgs = root.querySelectorAll('img[src^="http"]');
+      await Promise.all(Array.from(imgs).map(async (img) => {
+        const url = await proxyImg(img.getAttribute('src'));
+        if (url) img.src = url;
+      }));
+    }
+    // Decrypts the question and prepares its HTML (images already swapped to blob: URLs) away from
+    // the screen, so showing it later is instant.
+    async function prepareView(bundle) {
+      const payload = await decryptWith(sessionKey, bundle.question);
+      const holder = document.createElement('div');
+      const q = document.createElement('div'); q.innerHTML = payload.question_html || '';
+      holder.appendChild(q);
+      const opts = [];
+      for (let i = 0; i < 4; i += 1) {
+        const o = document.createElement('div'); o.innerHTML = (payload.options && payload.options[LETTERS[i]]) || '';
+        holder.appendChild(o); opts.push(o);
+      }
+      await hardenImages(holder);
+      return { bundle, payload, qHtml: q.innerHTML, optHtml: opts.map((o) => o.innerHTML) };
+    }
+
+    // ---------------- helpers ----------------
+    const fmtClock = (ms) => { const s = Math.floor(ms / 1000); return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
+    const clockElapsed = () => clockBase + (clockRunning ? Date.now() - clockStart : 0);
+    function startClock() { clockBase = 0; clockStart = Date.now(); clockRunning = true; }
+    function stopClock() { if (clockRunning) { clockBase += Date.now() - clockStart; clockRunning = false; } }
+    setInterval(() => { $('ui-clock').textContent = fmtClock(clockElapsed()); }, 250);
+    document.addEventListener('visibilitychange', () => {
+      if (phase !== 'answering') return;
+      if (document.hidden) stopClock(); else { clockStart = Date.now(); clockRunning = true; }
+    });
+
+    function setPhase(p) {
+      phase = p;
+      const selected = document.querySelector('input[name="ult-option"]:checked');
+      const main = $('btn-main'); const skip = $('btn-skip');
+      if (p === 'answered') {
+        main.textContent = 'Next Question >>'; main.className = 'footer-btn btn-next'; main.disabled = false;
+        skip.style.display = 'none'; $('ui-kbd-hint').textContent = 'Enter → next question';
+      } else {
+        main.textContent = p === 'submitting' ? 'Checking…' : 'Submit'; main.className = 'footer-btn btn-primary';
+        main.disabled = !(p === 'answering' && selected);
+        skip.style.display = ''; skip.disabled = p !== 'answering';
+        $('ui-kbd-hint').textContent = 'Keys: 1–4 select · Enter submit';
+      }
+      $('ui-options-block').classList.toggle('locked', p === 'answered' || p === 'submitting');
+    }
+
+    const showLoader = (on) => $('ui-loader').classList.toggle('show', !!on);
+    function showError(msg, retryFn) {
+      $('ui-question-wrap').style.display = 'none';
+      const box = $('ui-error'); box.style.display = 'block'; box.innerHTML = '';
+      const p = document.createElement('p'); p.textContent = msg; box.appendChild(p);
+      if (retryFn) { const b = document.createElement('button'); b.className = 'footer-btn btn-primary'; b.textContent = 'Try again'; b.onclick = retryFn; box.appendChild(b); }
+      const back = document.createElement('button'); back.className = 'footer-btn btn-secondary'; back.style.marginLeft = '8px'; back.textContent = 'Back to Training Ground';
+      back.onclick = () => location.replace(BACK_URL); box.appendChild(back);
+      $('ui-boot').style.display = 'none'; showLoader(false); setPhase('error');
+    }
+    function clearError() { $('ui-error').style.display = 'none'; $('ui-question-wrap').style.display = ''; }
+
+    function renderStats() {
+      $('st-ok').textContent = tally.ok; $('st-bad').textContent = tally.bad;
+      $('ui-live-ok').textContent = tally.ok; $('ui-live-bad').textContent = tally.bad;
+      const n = tally.ok + tally.bad;
+      $('st-acc').textContent = n ? `${Math.round((tally.ok / n) * 1000) / 10}%` : '—';
+      const dots = $('ui-dots'); dots.innerHTML = '';
+      recent.slice(-40).forEach((r) => { const d = document.createElement('div'); d.className = `dot ${r.t}`; d.textContent = r.n; dots.appendChild(d); });
+    }
+
+    // Paints a prepared question, starts its clock and tops up the prefetch queue.
+    function showQuestion(view) {
+      clearError();
+      cur = view;
+      qNumber += 1;
+      $('ui-q-label').textContent = `Question ${qNumber}`;
+      $('ui-subject').textContent = view.payload.subject || '—';
+      $('ui-chapter').textContent = view.payload.chapter_name || '';
+      $('ui-question-content').innerHTML = view.qHtml;
+      for (let i = 0; i < 4; i += 1) {
+        $(`opt-${i}`).innerHTML = view.optHtml[i];
+        const row = document.querySelector(`.option-row[data-i="${i}"]`);
+        row.classList.remove('is-correct', 'is-wrong', 'is-yours-ok');
+        row.style.display = view.optHtml[i].trim() ? '' : 'none';
+        $(`badge-${i}`).textContent = '';
+        row.querySelector('input').checked = false;
+      }
+      $('ui-result').className = 'result-banner';
+      $('ui-solution').classList.remove('show');
+      $('ui-solution-body').innerHTML = '';
+      $('ui-canvas').scrollTop = 0;
+      showLoader(false);
+      setPhase('answering');
+      startClock();
+      renderStats();
+      ensureQueue();
+    }
+
+    // ---------------- network ----------------
+    async function postJson(url, body) {
+      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json().catch(() => ({}));
+      return { res, data };
+    }
+
+    const heldIds = () => new Set([cur && cur.bundle.q_id, ...queue.map((e) => e.bundle.q_id)].filter(Boolean));
+    function enqueue(bundle) {
+      if (!bundle || heldIds().has(bundle.q_id)) return;
+      seen.push(bundle.q_id); if (seen.length > MAX_SEEN) seen = seen.slice(-MAX_SEEN);
+      const entry = { bundle, view: prepareView(bundle) };
+      entry.view.catch(() => {});
+      queue.push(entry);
+    }
+
+    // Keeps the next question(s) ready WHILE the student is still on the current one.
+    // While a question is open we hold 1 upcoming; once it is answered, the server has promoted
+    // the held one to "current", so we fetch one more.
+    function ensureQueue() {
+      if (fetching) return fetching;
+      const run = (async () => {
+        await null;   // let `fetching = run` below happen before the loop can finish (else it stays set forever)
+        try {
+          for (let guard = 0; guard < 3; guard += 1) {
+            const want = phase === 'answered' ? 2 : 1;
+            if (queue.length >= want || exhausted) break;
+            try { await skipChain; } catch (e) {}
+            const { res, data } = await postJson('/api/ultimate/next', { token, seen });
+            if (res.status === 401) { location.replace('/login'); return; }
+            if (!res.ok) break;
+            if (data.recycled) seen = [...heldIds()];
+            if (data.exhausted) { exhausted = true; break; }
+            const before = queue.length;
+            enqueue(data.bundle);
+            if (queue.length === before) break;      // nothing new (already held)
+          }
+        } catch (e) { console.error('prefetch failed', e); }
+        finally { fetching = null; }
+      })();
+      fetching = run;
+      return run;
+    }
+
+    // Boot / resync: whatever the server says is on screen now.
+    async function loadCurrent() {
+      showLoader(true); clearError(); setPhase('loading');
+      queue.length = 0; exhausted = false; seen = []; needResync = false;
+      try {
+        const { res, data } = await postJson('/api/ultimate/question', { token });
+        if (res.status === 401) { location.replace('/login'); return; }
+        if (!res.ok) { showError(data.error || 'Could not load a question.', loadCurrent); return; }
+        sessionKey = await importKey(data.k);
+        const view = await prepareView(data.current);
+        seen.push(data.current.q_id);
+        cur = view;                         // so enqueue() knows what is held
+        if (data.next) enqueue(data.next);
+        showQuestion(view);
+        $('ui-boot').style.display = 'none';
+      } catch (e) {
+        console.error(e);
+        showError('Connection problem. Please check your internet and try again.', loadCurrent);
+      }
+    }
+
+    // Shows the next question: instantly if it was prefetched, otherwise waits for it.
+    async function advance() {
+      setPhase('submitting');
+      if (!queue.length) {
+        showLoader(true);
+        await ensureQueue();
+      }
+      const entry = queue.shift();
+      if (!entry) {
+        showLoader(false);
+        if (exhausted) { location.href = STATS_URL; return; }
+        showError('Could not load the next question. Please check your connection.', () => { clearError(); advance(); });
+        return;
+      }
+      let view;
+      try { view = await entry.view; } catch (e) { showLoader(false); await loadCurrent(); return; }
+      showQuestion(view);
+    }
+
+    async function onSubmit() {
+      if (phase !== 'answering') return;
+      const sel = document.querySelector('input[name="ult-option"]:checked');
+      if (!sel) return;
+      const idx = parseInt(sel.value, 10);
+      stopClock(); setPhase('submitting');
+      try { await skipChain; } catch (e) {}
+      if (needResync) { await loadCurrent(); return; }
+
+      let out;
+      try { out = await postJson('/api/ultimate/answer', { token, q_id: cur.bundle.q_id, selected: idx }); } catch (e) { out = null; }
+      const back = (msg) => { startClock(); setPhase('answering'); if (msg) alert(msg); };
+      if (!out) { back('Connection problem. Please try again.'); return; }
+      const { res, data } = out;
+      if (res.status === 409) {
+        if (data.error === 'unavailable') { back(data.message || 'This question is unavailable. Please skip it.'); return; }
+        await loadCurrent(); return;          // already answered elsewhere (double click / other tab)
+      }
+      if (!res.ok || !data.ans_key) { back(data.error || 'Could not submit your answer. Please try again.'); return; }
+
+      // The answer + solution were already here as ciphertext; the server just released the key.
+      let ans;
+      try { ans = await decryptWith(await importKey(data.ans_key), cur.bundle.answer); }
+      catch (e) { console.error(e); await loadCurrent(); return; }
+
+      const correctIdx = LETTERS.indexOf(ans.correct_key);
+      document.querySelectorAll('.option-row').forEach((row) => {
+        const i = parseInt(row.dataset.i, 10);
+        const badge = $(`badge-${i}`);
+        if (i === correctIdx) {
+          row.classList.add('is-correct'); badge.textContent = data.is_correct ? '✓ Correct' : '✓ Correct answer';
+          if (data.is_correct) row.classList.add('is-yours-ok');
+        } else if (i === idx) {
+          row.classList.add('is-wrong'); badge.textContent = '✗ Your answer';
+        }
+      });
+      $('ui-result').className = `result-banner ${data.is_correct ? 'ok' : 'bad'}`;
+      $('ui-result-icon').textContent = data.is_correct ? 'check_circle' : 'cancel';
+      $('ui-result-text').textContent = data.is_correct ? 'Correct!' : `Incorrect — the correct answer is option ${ans.correct_key}.`;
+
+      if (data.is_correct) tally.ok += 1; else tally.bad += 1;
+      recent.push({ n: qNumber, t: data.is_correct ? 'ok' : 'bad' });
+      renderStats();
+
+      const solBox = $('ui-solution'); const solBody = $('ui-solution-body');
+      solBox.classList.add('show');
+      if (ans.solution_html && ans.solution_html.trim()) {
+        solBody.innerHTML = ans.solution_html;
+        hardenImages(solBody);
+      } else { solBody.textContent = 'No written solution is available for this question yet.'; }
+
+      setPhase('answered');
+      $('ui-canvas').scrollTo({ top: $('ui-result').offsetTop - 12, behavior: 'smooth' });
+      ensureQueue();                          // the held "next" is now current on the server: fetch one more
+    }
+
+    // Skip: nothing counted, no answer revealed. The next question is already here, so it opens at
+    // once; the server is told in the background (requests are kept in order).
+    function onSkip() {
+      if (phase !== 'answering') return;
+      stopClock();
+      const qid = cur.bundle.q_id;
+      recent.push({ n: qNumber, t: 'skip' });
+      skipChain = skipChain
+        .then(() => postJson('/api/ultimate/answer', { token, q_id: qid, selected: null }))
+        .then(({ res }) => { if (res.status === 409 || res.status >= 500) needResync = true; })
+        .catch(() => { needResync = true; });
+      advance();
+    }
+
+    // ---------------- wiring ----------------
+    document.querySelectorAll('input[name="ult-option"]').forEach((r) => r.addEventListener('change', () => { if (phase === 'answering') setPhase('answering'); }));
+    $('btn-main').onclick = () => { if (phase === 'answered') advance(); else onSubmit(); };
+    $('btn-skip').onclick = onSkip;
+    $('btn-end').onclick = () => { location.href = STATS_URL; };
+
+    document.addEventListener('keydown', (e) => {
+      if (isEditable(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
+      if ($('ui-report-modal').style.display === 'flex') return;
+      const k = e.key.toLowerCase();
+      const pick = (n) => { const r = document.querySelector(`input[name="ult-option"][value="${n}"]`); if (r) { r.checked = true; setPhase('answering'); } };
+      if (phase === 'answering' && /^[1-4]$/.test(k)) pick(parseInt(k, 10) - 1);
+      else if (phase === 'answering' && /^[a-d]$/.test(k)) pick('abcd'.indexOf(k));
+      else if (e.key === 'Enter') { e.preventDefault(); if (phase === 'answered') advance(); else if (phase === 'answering') onSubmit(); }
+    });
+
+    $('ui-global-image-zoombar').addEventListener('input', (e) => {
+      document.documentElement.style.setProperty('--zoom-factor', (0.5 + Number(e.target.value) / 100).toFixed(2));
+    });
+    const menuBtn = $('ui-mobile-hamburger-toggle'); const sidebar = $('ui-sidebar');
+    menuBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('mobile-drawer-open'); });
+    document.addEventListener('click', (e) => {
+      if (sidebar.classList.contains('mobile-drawer-open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) sidebar.classList.remove('mobile-drawer-open');
+    });
+
+    // ---------------- report error ----------------
+    $('btn-report-error').onclick = () => { if (cur) $('ui-report-modal').style.display = 'flex'; };
+    window.closeReportModal = () => { $('ui-report-modal').style.display = 'none'; };
+    window.submitErrorReport = async () => {
+      if (!cur) return;
+      const btn = $('btn-submit-report');
+      btn.textContent = 'Reporting...'; btn.disabled = true;
+      try {
+        const res = await fetch('/api/exam/report-error', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token, questionLabel: qNumber, sectionName: cur.payload.subject, q_id: cur.bundle.q_id, description: $('report-description').value }),
+        });
+        if (!res.ok) throw new Error('rejected');
+        alert('Error reported securely! Our team will review it.');
+        $('report-description').value = '';
+        closeReportModal();
+      } catch (e) { alert('Could not submit the report. Please try again.'); }
+      finally { btn.textContent = 'Report Error'; btn.disabled = false; }
+    };
+
+    window.addEventListener('beforeunload', () => { imgCache.forEach((u) => URL.revokeObjectURL(u)); });
+
+    loadCurrent();
+  })();
+  </script>
+</body>
+</html>

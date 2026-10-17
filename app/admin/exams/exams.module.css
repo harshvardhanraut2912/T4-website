@@ -1,0 +1,230 @@
+/* app/admin/exams/exams.module.css  (new file)
+   Exams list + Create Exam. Bright, flat, square-ish. No transitions or hover lifts. */
+
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #e5e5ea;margin-bottom:24px}
+.title{margin:0;font-family:var(--font-display),var(--font-body),sans-serif;font-size:24px;font-weight:800;letter-spacing:-.01em;color:#007aff}
+.subtitle{margin:6px 0 0;font-size:14px;color:#6e6e73}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border:1px solid #007aff;border-radius:10px;background:#007aff;color:#fff;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:hover{background:#0062cc;border-color:#0062cc}
+.btnGhost{background:#fff;color:#007aff}
+.btnGhost:hover{background:#f2f2f7;border-color:#007aff}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed;pointer-events:none}
+.empty{background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:48px 20px;text-align:center;color:#6e6e73;font-size:14px}
+
+/* ---- create exam: form sections ---- */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.form{display:flex;flex-direction:column;gap:20px;min-width:0}
+.card{background:#fff;border:1px solid #e5e5ea;border-radius:10px}
+.cardHead{display:flex;align-items:baseline;gap:10px;padding:14px 20px;border-bottom:1px solid #e5e5ea;background:#f7f7fa}
+.step{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:10px;background:#007aff;color:#fff;font-size:12px;font-weight:800}
+.cardTitle{margin:0;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#1c1c1e}
+.cardHint{font-size:13px;color:#6e6e73}
+.cardBody{padding:20px}
+
+.label{display:block;margin-bottom:6px;font-size:12px;font-weight:700;color:#3a3a3c;text-transform:uppercase;letter-spacing:.04em}
+.input{width:100%;height:44px;padding:0 14px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#1c1c1e;font-size:15px;outline:none}
+.input:focus{border-color:#007aff;box-shadow:0 0 0 2px rgba(0,0,0,.12)}
+
+/* ---- exam type tiles (square, small round corners) ---- */
+.examGrid{display:grid;grid-template-columns:repeat(3,minmax(0,200px));gap:16px}
+.examTile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;aspect-ratio:1/1;padding:16px;border:1px solid #d1d1d6;border-radius:8px;background:#fff;color:#1c1c1e;cursor:pointer;font:inherit}
+.examTile:hover{border-color:#007aff}
+.examTileOn{border:2px solid #007aff;background:#eaf3ff}
+.examTick{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:10px;background:#007aff;color:#fff;font-size:13px;font-weight:800;display:none;align-items:center;justify-content:center}
+.examTileOn .examTick{display:flex}
+.logoBox{width:84px;height:84px;display:flex;align-items:center;justify-content:center}
+.logoImg{max-width:100%;max-height:100%;object-fit:contain}
+.logoFallback{width:84px;height:84px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:#007aff;color:#fff;font-family:var(--font-display),var(--font-body),sans-serif;font-size:20px;font-weight:800;letter-spacing:.02em}
+.examName{font-size:15px;font-weight:800}
+
+/* ---- option rows (PCM / PCB / Subject wise) ---- */
+.optionRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:760px}
+.option{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#1c1c1e;text-align:left;cursor:pointer;font:inherit}
+.option:hover{border-color:#007aff}
+.optionOn{border:2px solid #007aff;background:#eaf3ff;padding:13px 15px}
+.optionName{font-size:16px;font-weight:800;color:#007aff}
+.optionSub{font-size:12.5px;color:#6e6e73}
+
+/* ---- subject accordion (PCM / PCB) ---- */
+.acc{border:1px solid #e5e5ea;border-radius:10px;overflow:hidden;background:#fff}
+.acc + .acc{margin-top:10px}
+.accHead{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:0;background:#f7f7fa;color:#1c1c1e;text-align:left;cursor:pointer;font:inherit}
+.accHead:hover{background:#eaf3ff}
+.chev{flex:none;width:18px;color:#007aff;font-size:14px;font-weight:800}
+.accName{font-size:15px;font-weight:800}
+.accMeta{margin-left:auto;font-size:13px;color:#6e6e73;white-space:nowrap}
+.accBody{border-top:1px solid #e5e5ea}
+
+/* ---- chapter rows ---- */
+.chList{margin:0;padding:0;list-style:none}
+.chRow{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #efeff4;font-size:14px;color:#1c1c1e}
+.chRow:last-child{border-bottom:0}
+.chNum{flex:none;width:26px;color:#8e8e93;font-size:12.5px;font-variant-numeric:tabular-nums}
+.chName{flex:1;min-width:0}
+.chStd{flex:none;padding:2px 8px;border:1px solid #d1d1d6;border-radius:10px;background:#f7f7fa;color:#3a3a3c;font-size:11.5px;font-weight:700}
+.chCount{flex:none;min-width:84px;text-align:right;color:#6e6e73;font-size:13px;font-variant-numeric:tabular-nums}
+.pick{cursor:pointer}
+.pick:hover{background:#f7f7fa}
+.pickOn{background:#eaf3ff}
+.box{flex:none;width:18px;height:18px;border:1.5px solid #8e8e93;border-radius:10px;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;line-height:1;font-weight:800}
+.boxOn{background:#007aff;border-color:#007aff}
+.scroll{max-height:340px;overflow-y:auto}
+
+/* ---- subject-wise ---- */
+.subjectRow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:820px}
+.subjTile{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#1c1c1e;cursor:pointer;font:inherit;text-align:left}
+.subjTile:hover{border-color:#007aff}
+.subjTileOn{border:2px solid #007aff;background:#eaf3ff;padding:11px 13px}
+.subjName{font-size:14px;font-weight:700}
+.panel{border:1px solid #e5e5ea;border-radius:10px;background:#fff;overflow:hidden}
+.panel + .panel{margin-top:14px}
+.panelHead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid #e5e5ea;background:#f7f7fa}
+.panelTitle{margin:0;font-size:15px;font-weight:800;color:#007aff}
+.seg{display:inline-flex;border:1px solid #d1d1d6;border-radius:10px;overflow:hidden;background:#fff}
+.segBtn{height:32px;padding:0 14px;border:0;border-right:1px solid #d1d1d6;background:#fff;color:#3a3a3c;font-size:13px;font-weight:700;cursor:pointer}
+.segBtn:last-child{border-right:0}
+.segBtn:hover{background:#f2f2f7}
+.segOn,.segOn:hover{background:#007aff;color:#fff}
+.panelTools{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:13px;color:#6e6e73}
+.linkBtn{border:0;background:none;padding:0;color:#007aff;font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline}
+.sep{width:1px;height:14px;background:#d1d1d6}
+
+/* ---- states + summary ---- */
+.note{padding:22px;text-align:center;color:#6e6e73;font-size:14px}
+.err{margin:0;padding:12px 14px;border:1px solid #ffd1ce;background:#fff1f0;color:#d70015;font-size:13px;border-radius:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.summary{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 20px;background:#fff;border:1px solid #e5e5ea;border-radius:10px;position:sticky;bottom:0;z-index:5}
+.sumText{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:#3a3a3c}
+.sumText strong{color:#1c1c1e;font-variant-numeric:tabular-nums}
+.sumActions{display:flex;gap:10px}
+
+@media(max-width:900px){
+  .title{font-size:20px}
+  .examGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .logoBox,.logoFallback{width:56px;height:56px}
+  .logoFallback{font-size:14px}
+  .examName{font-size:13px}
+  .optionRow{grid-template-columns:1fr}
+  .subjectRow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .panelTools{margin-left:0;width:100%}
+  .chCount{min-width:56px}
+  .accMeta{white-space:normal;text-align:right;font-size:12px}
+}
+
+/* ---- disabled option buttons ---- */
+.option:disabled{opacity:.55;cursor:not-allowed;border-color:#e5e5ea}
+.option:disabled:hover{border-color:#e5e5ea}
+.modeRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:760px}
+
+/* ---- subject dropdown header (subject wise) ---- */
+.panelToggle{display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:inherit}
+.panelMeta{margin-left:auto;font-size:13px;color:#6e6e73}
+.panelTools{display:flex;align-items:center;gap:12px;padding:8px 16px;border-bottom:1px solid #efeff4;background:#fff}
+.panel.acc + .panel.acc{margin-top:14px}
+
+/* ---- right column: number of questions ---- */
+.aside{position:sticky;top:76px;background:#fff;border:1px solid #e5e5ea;border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 100px)}
+.asideBody{padding:14px 16px;overflow-y:auto;flex:1;min-height:80px}
+.asideHint{margin:0 0 12px;font-size:13px;color:#6e6e73;line-height:1.45}
+.asideFoot{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid #e5e5ea;background:#f7f7fa;font-size:14px;color:#3a3a3c}
+.asideFoot strong{font-size:18px;color:#007aff;font-variant-numeric:tabular-nums}
+.cntGroup{margin-bottom:14px}
+.cntGroupHead{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;margin-bottom:4px;border-bottom:2px solid #007aff;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#007aff}
+.cntRow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #efeff4}
+.cntRow:last-child{border-bottom:0}
+.cntName{flex:1;min-width:0;font-size:13.5px;color:#1c1c1e;display:flex;flex-direction:column;line-height:1.3}
+.cntSub{font-size:11.5px;color:#8e8e93}
+.numInput{flex:none;width:72px;height:36px;padding:0 8px;border:1px solid #d1d1d6;border-radius:10px;text-align:right;font-size:14px;color:#1c1c1e;background:#fff;outline:none}
+.numInput:focus{border-color:#007aff;box-shadow:0 0 0 2px rgba(0,0,0,.12)}
+.warn{margin:10px 0;padding:8px 12px;border:1px solid #f0d9a8;background:#fff4e0;color:#a05a00;font-size:13px;border-radius:10px}
+
+/* ---- question selection screen ---- */
+.headBtns{display:flex;gap:10px;flex-wrap:wrap}
+.btnSm{height:32px;padding:0 14px;font-size:13px}
+.progressBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;margin-bottom:16px;background:#fff;border:1px solid #e5e5ea;border-radius:10px;font-size:14px;color:#3a3a3c}
+.progressText strong{color:#1c1c1e;font-variant-numeric:tabular-nums}
+.doneTag{margin-left:12px;padding:2px 8px;border:1px solid #b6e8c4;background:#eafaf0;color:#248a3d;font-size:12px;font-weight:700;border-radius:10px}
+.progressTools{display:flex;align-items:center;gap:12px}
+.sections .acc + .acc{margin-top:12px}
+.secHead{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#f7f7fa;flex-wrap:wrap}
+.secToggle{display:flex;align-items:center;gap:10px;flex:1;min-width:200px;border:0;background:none;padding:6px 0;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.badge{flex:none;padding:3px 10px;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#3a3a3c;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.badgeDone{border-color:#b6e8c4;background:#eafaf0;color:#248a3d}
+.errPad{margin:14px}
+.errInline{color:#d70015;font-size:13px}
+.moreBar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid #efeff4;font-size:13px;color:#6e6e73}
+.summaryGap{margin-top:20px}
+.noteSm{font-size:13px;color:#8e8e93}
+
+/* ---- question table ---- */
+.tableWrap{overflow-x:auto}
+.qTable{width:100%;border-collapse:collapse;font-size:14px;color:#1c1c1e}
+.qTable th{padding:10px 14px;text-align:left;background:#f2f2f7;border-top:1px solid #efeff4;border-bottom:1px solid #e5e5ea;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#6e6e73;white-space:nowrap}
+.qTable td{padding:12px 14px;border-bottom:1px solid #efeff4;vertical-align:top}
+.thNo{width:64px}.thId{width:150px}.thCheck{width:90px;text-align:right!important}
+.qRow{cursor:pointer}
+.qRow:hover{background:#f7f7fa}
+.qRowOn{background:#eaf3ff}
+.tdNo{color:#8e8e93;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qChev{display:inline-block;width:14px;color:#007aff;font-weight:800}
+.tdId{color:#8e8e93;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.tdCheck{text-align:right}
+.thRegen{width:110px;text-align:center!important}
+.tdRegen{text-align:center}
+.regenBtn,.eyeBtn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid #d1d1d6;border-radius:10px;background:#fff;color:#007aff;cursor:pointer}
+.regenBtn:hover,.eyeBtn:hover{background:#eaf3ff;border-color:#007aff}
+.regenBtn:disabled{opacity:.6;cursor:wait}
+.regenSpin svg{animation:regenSpin .8s linear infinite}
+@keyframes regenSpin{to{transform:rotate(360deg)}}
+.qPrev{max-height:3.2em;overflow:hidden;line-height:1.55}
+.qPrev img,.qFull img{max-width:100%;height:auto}
+.qPrev img{max-height:44px;width:auto}
+.qFull{line-height:1.6}
+.qExpandRow td{background:#fbfcfe}
+.optList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:2px 0 12px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid #e5e5ea;border-radius:10px;background:#fff;line-height:1.5}
+.optRight{border-color:#4caf78;background:#eafaf0}
+.optLetter{flex:none;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #d1d1d6;border-radius:10px;background:#f2f2f7;font-size:12px;font-weight:800;color:#007aff}
+.optRight .optLetter{background:#248a3d;border-color:#248a3d;color:#fff}
+.rightTag{display:inline-block;margin-bottom:12px;padding:3px 10px;border:1px solid #b6e8c4;background:#eafaf0;color:#248a3d;font-size:12.5px;font-weight:700;border-radius:10px}
+.solBox{padding:12px 14px;border:1px solid #e5e5ea;border-left:3px solid #007aff;background:#fff;line-height:1.6}
+.solLabel{margin-bottom:6px;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#007aff}
+.boxLg{width:22px;height:22px;font-size:15px;padding:0;cursor:pointer}
+button.box:disabled,.boxOff{background:#efeff4;border-color:#d1d1d6;cursor:not-allowed}
+
+@media(max-width:1100px){
+  .layout{grid-template-columns:1fr}
+  .aside{position:static;max-height:none}
+  .asideBody{max-height:420px}
+}
+@media(max-width:900px){
+  .modeRow{grid-template-columns:1fr}
+  .optList{grid-template-columns:1fr}
+  .thId,.tdId{display:none}
+  .thRegen{width:56px;font-size:0}
+  .qTable th,.qTable td{padding:10px 8px}
+  .panelMeta{margin-left:0;width:100%}
+}
+
+/* ---- saved exams list + preview ---- */
+.thExam{width:110px}.thQs{width:110px}.thDate{width:130px}.thReserved{width:130px;text-align:center!important}
+.tdNum{font-variant-numeric:tabular-nums}
+.tdDate{color:#6e6e73;white-space:nowrap}
+.tdReserved{border-left:1px dashed #e5e5ea}
+.examRow:hover{background:#f7f7fa}
+.examTitle{font-weight:700;color:#1c1c1e}
+.examSlug{margin-top:2px;font-size:12px;color:#8e8e93;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.qRowChanged{background:#fffbea}
+.qRowChanged:hover{background:#fff6d6}
+.newTag{display:inline-block;margin-left:6px;padding:1px 6px;border:1px solid #e6c34d;background:#fff3c4;color:#7a5b00;font-size:10px;font-weight:800;letter-spacing:.04em;border-radius:10px;vertical-align:middle}
+.changedTag{flex:none;margin-left:12px;padding:2px 8px;border:1px solid #e6c34d;background:#fff8e1;color:#7a5b00;font-size:12px;font-weight:700;border-radius:10px}
+.okMsg{margin:0 0 16px;padding:12px 14px;border:1px solid #b6e8c4;background:#eafaf0;color:#248a3d;font-size:13px;border-radius:10px}
+@media(max-width:900px){
+  .thDate,.tdDate,.thExam{display:none}
+  .thReserved{width:70px}
+}
+
+/* ---- subjects switched off for this admin (Settings -> Developers) ---- */
+.optionLocked,.subjTileLocked{opacity:.6;background:#f6f7fb;border-style:dashed;cursor:not-allowed}
+.optionLocked:hover,.subjTileLocked:hover{border-color:#d1d1d6}
+.lockTag{display:inline-block;margin-left:8px;padding:1px 7px;border:1px solid #ffd1ce;background:#fff1f0;color:#d70015;border-radius:10px;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.noAccess{margin:14px 0 0;padding:10px 14px;border:1px solid #ffd1ce;background:#fff1f0;color:#d70015;font-size:13px;font-weight:700;border-radius:10px}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Under Maintenance | Bihani Chemistry Classes</title>
+<style>
+  :root { --bg:#f4f8ff; --card:#ffffff; --ink:#0c1438; --muted:#4f5b78; --line:#d6e2f3; --navy:#172a85; --cyan:#12a0ee; --red:#e0242c; --glass:#dbe8fb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0a1030; --card:#111a3d; --ink:#e8edff; --muted:#a9b6d6; --line:#27366e; --navy:#8fb0ff; --glass:#1a2658; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font-family: 'DM Sans', 'Segoe UI', Roboto, Arial, sans-serif; }
+  body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 34px 34px; background-position: -1px -1px; }
+  .card { width: min(920px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 40px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; box-shadow: 0 30px 70px rgba(23,42,133,.14); }
+  .brand { font-weight: 800; letter-spacing: 2px; font-size: 12px; color: var(--navy); } .brand b { color: var(--red); }
+  h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.1; margin: 14px 0 12px; }
+  p { color: var(--muted); font-size: 15.5px; line-height: 1.65; margin: 0; max-width: 440px; }
+  .readout { margin-top: 24px; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); max-width: 380px; }
+  .ph { font-size: 26px; font-weight: 800; color: var(--navy); min-width: 92px; font-variant-numeric: tabular-nums; }
+  .ph small { font-size: 12px; color: var(--muted); font-weight: 600; margin-right: 4px; }
+  .bar { flex: 1; } .bar span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .track { height: 8px; border-radius: 99px; background: var(--glass); overflow: hidden; } .fill { height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--cyan), var(--red)); }
+  .foot { margin-top: 18px; font-size: 12px; color: var(--muted); }
+  svg { width: 100%; height: auto; display: block; }
+  .stroke { stroke: var(--navy); } .drop { animation: dropFall 1.5s cubic-bezier(.5,0,1,.6) infinite; }
+  @keyframes dropFall { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(104px); opacity: 0; } }
+  .ripple { transform-box: fill-box; transform-origin: center; animation: rip 1.5s ease-out infinite; }
+  @keyframes rip { 0%, 80% { transform: scale(.2); opacity: 0; } 85% { opacity: .8; } 100% { transform: scale(1.6); opacity: 0; } }
+  @media (max-width: 760px) { .card { grid-template-columns: 1fr; padding: 28px 22px; text-align: center; } p, .readout { margin-left: auto; margin-right: auto; } .readout { text-align: left; } }
+  @media (prefers-reduced-motion: reduce) { .drop, .ripple { animation: none; } }
+</style>
+</head>
+<body>
+  <main class="card">
+    <section>
+      <div class="brand">BIHANI <b>CHEMISTRY</b> CLASSES</div>
+      <h1>We're running a quick titration on the site.</h1>
+      <p>Bihani Chemistry Classes is offline for a short scheduled update. Your batches, tests and notes are safe. We'll be back shortly, so please check again in a little while.</p>
+      <div class="readout" aria-live="off">
+        <div class="ph"><small>pH</small><span id="ph">3.0</span></div>
+        <div class="bar"><span>Update in progress</span><div class="track"><div class="fill" id="fill"></div></div></div>
+      </div>
+      <div class="foot">Bihani Chemistry Classes &middot; Sangamner &middot; Site Maintenance</div>
+    </section>
+
+    <svg id="lab" viewBox="0 0 360 430" role="img" aria-label="A burette dripping into a flask that changes colour">
+      <defs><clipPath id="fl"><path d="M150 262H210V312L266 392Q272 410 254 410H106Q88 410 94 392L150 312Z"/></clipPath></defs>
+      <!-- stand -->
+      <rect x="40" y="410" width="120" height="10" rx="5" fill="var(--glass)"/><rect x="48" y="20" width="8" height="396" rx="4" fill="var(--glass)"/>
+      <rect x="52" y="86" width="116" height="7" rx="3" fill="var(--glass)"/>
+      <!-- burette -->
+      <rect x="168" y="24" width="24" height="176" rx="6" fill="none" class="stroke" stroke-width="3"/>
+      <rect x="171" y="40" width="18" height="158" fill="#12a0ee" opacity=".22"/>
+      <rect id="bur" x="171" y="44" width="18" height="154" fill="#12a0ee" opacity=".85"/>
+      <g stroke="var(--navy)" stroke-width="1.5" opacity=".6"><path d="M192 50h7M192 70h4M192 90h7M192 110h4M192 130h7M192 150h4M192 170h7"/></g>
+      <rect x="164" y="200" width="32" height="9" rx="3" fill="var(--navy)"/><rect x="196" y="200" width="16" height="6" rx="3" fill="var(--red)"/>
+      <path d="M176 209h8l-3 14h-2z" fill="var(--navy)"/>
+      <!-- drop + ripple -->
+      <path class="drop" d="M180 226c-4 6-5 9-5 11a5 5 0 0 0 10 0c0-2-1-5-5-11z" fill="#12a0ee"/>
+      <ellipse class="ripple" cx="180" cy="346" rx="22" ry="4" fill="none" stroke="#fff" stroke-width="2"/>
+      <!-- flask + liquid -->
+      <g clip-path="url(#fl)"><rect id="liq" x="80" y="344" width="200" height="80" fill="#cfe8ff"/>
+        <circle cx="140" cy="395" r="3" fill="#fff" opacity=".6"/><circle cx="200" cy="385" r="4" fill="#fff" opacity=".5"/></g>
+      <path d="M150 262H210V312L266 392Q272 410 254 410H106Q88 410 94 392L150 312Z" fill="none" class="stroke" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M144 262H216" class="stroke" stroke-width="6" stroke-linecap="round"/>
+    </svg>
+  </main>
+<script>
+  // Drive pH readout, burette level and flask colour from one 12s loop (clear -> pink endpoint -> reset).
+  (function () {
+    var ph = document.getElementById('ph'), fill = document.getElementById('fill'), liq = document.getElementById('liq'), bur = document.getElementById('bur');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function mix(a, b, t) { return Math.round(a + (b - a) * t); }
+    function frame(now) {
+      var t = ((now / 1000) % 12) / 12;                 // 0..1
+      var p = Math.min(t / 0.75, 1);                    // titration progress 0..1 over first 9s
+      var pink = t < 0.58 ? 0 : Math.min((t - 0.58) / 0.17, 1); // colour flip near endpoint
+      var back = t > 0.92 ? (t - 0.92) / 0.08 : 0;      // fade out during reset
+      var k = Math.max(pink - back, 0);
+      ph.textContent = (3 + p * 5.5 - back * 5.5).toFixed(1);
+      fill.style.width = Math.round((p - back) * 100) + '%';
+      liq.setAttribute('fill', 'rgb(' + mix(207, 255, k) + ',' + mix(232, 122, k) + ',' + mix(255, 168, k) + ')');
+      liq.setAttribute('y', (344 - p * 22).toFixed(1));
+      var h = 154 - p * 100 + back * 100; bur.setAttribute('y', (198 - h).toFixed(1)); bur.setAttribute('height', h.toFixed(1));
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>

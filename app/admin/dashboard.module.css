@@ -1,0 +1,51 @@
+/* app/admin/dashboard.module.css - iOS-inspired Overview dashboard UI */
+
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:2px 2px 22px;margin-bottom:24px;border-bottom:1px solid rgba(60,60,67,.09)}
+.eyebrow{font-size:11px;font-weight:650;letter-spacing:.08em;color:#8e8e93;text-transform:uppercase;margin-bottom:6px}
+.title{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;font-size:32px;font-weight:750;letter-spacing:-.035em;color:#1c1c1e}
+.subtitle{margin:7px 0 0;font-size:14px;line-height:1.45;color:#6e6e73}
+.note{margin:0;font-size:14px;color:#6e6e73}
+.primaryBtn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 17px;border-radius:999px;background:#007aff;color:#fff;text-decoration:none;font-size:14px;font-weight:650;box-shadow:0 5px 14px rgba(0,122,255,.22);transition:transform .15s ease,background .15s ease,box-shadow .15s ease}
+.primaryBtn:hover{background:#006ee6;box-shadow:0 7px 18px rgba(0,122,255,.27)}
+.primaryBtn:active{transform:scale(.97)}
+
+.statsGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:30px}
+.statCard{position:relative;display:block;min-height:154px;padding:18px;border-radius:20px;background:rgba(255,255,255,.86);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 10px 28px rgba(0,0,0,.035);color:#1c1c1e;text-decoration:none;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.statCard:hover{transform:translateY(-2px);background:#fff;box-shadow:0 5px 20px rgba(0,0,0,.075),0 16px 38px rgba(0,0,0,.045)}
+.statTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.statIcon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,122,255,.11);color:#007aff;font-size:18px;font-weight:700}
+.statArrow{font-size:17px;color:#8e8e93}
+.statValue{font-size:30px;line-height:1;font-weight:750;letter-spacing:-.035em;color:#1c1c1e}
+.statLabel{margin-top:7px;font-size:14px;font-weight:650;color:#3a3a3c}
+.statSub{margin-top:4px;font-size:11.5px;color:#8e8e93}
+.blue .statIcon{background:rgba(0,122,255,.11);color:#007aff}.purple .statIcon{background:rgba(88,86,214,.11);color:#5856d6}.green .statIcon{background:rgba(52,199,89,.12);color:#34c759}.orange .statIcon{background:rgba(255,149,0,.13);color:#ff9500}
+.skeletonNumber{display:block;width:75px;height:30px;border-radius:8px;background:linear-gradient(90deg,#e5e5ea,#f2f2f7,#e5e5ea);background-size:200% 100%;animation:iosSkeleton 1.2s ease infinite}
+@keyframes iosSkeleton{to{background-position:-200% 0}}
+
+.mainGrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);gap:26px;align-items:start}
+.leftColumn,.rightColumn{min-width:0}
+.sectionHeader{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 2px 12px}
+.sectionHeader h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:#1c1c1e}
+.sectionHeader p{margin:4px 0 0;font-size:12px;color:#8e8e93}
+.textLink{font-size:12px;font-weight:600;color:#007aff;text-decoration:none;white-space:nowrap}.textLink:hover{opacity:.72}
+.recentExam{position:relative;display:flex;align-items:center;gap:16px;min-height:116px;margin-bottom:30px;padding:20px;border-radius:22px;background:rgba(255,255,255,.9);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 32px rgba(0,0,0,.05);color:#1c1c1e;text-decoration:none;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
+.recentExam:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(0,0,0,.075),0 18px 40px rgba(0,0,0,.045)}
+.examGlow{position:absolute;right:-70px;top:-80px;width:190px;height:190px;border-radius:50%;background:rgba(0,122,255,.10);filter:blur(2px);pointer-events:none}
+.examIcon{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;background:#007aff;color:#fff;font-size:22px;box-shadow:0 7px 18px rgba(0,122,255,.22)}
+.examInfo{min-width:0;position:relative}.examMeta{display:flex;gap:8px;align-items:center;font-size:10px;color:#8e8e93;text-transform:uppercase;letter-spacing:.06em;font-weight:650}.examMeta span:first-child{color:#007aff}.examInfo h3{margin:6px 0 8px;font-size:18px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.examDetails{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#8e8e93}.examDetails span+span{padding-left:12px;border-left:1px solid #d1d1d6}.examOpen{margin-left:auto;position:relative;flex:none;font-size:12px;font-weight:600;color:#007aff}.examOpen span{margin-left:4px}
+.emptyCard{padding:30px 22px;margin-bottom:30px;border-radius:20px;background:rgba(255,255,255,.8);color:#8e8e93;text-align:center;font-size:13px;border:1px solid rgba(60,60,67,.08)}
+
+.livePill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:rgba(52,199,89,.10);color:#248a3d;font-size:9px;font-weight:700;letter-spacing:.05em}.livePill::before{content:"";width:6px;height:6px;border-radius:50%;background:#34c759;box-shadow:0 0 0 3px rgba(52,199,89,.12)}
+.toppersCard{padding:8px;border-radius:22px;background:rgba(255,255,255,.88);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 32px rgba(0,0,0,.045)}
+.topper{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:16px;transition:background .15s ease,transform .15s ease}.topper:hover{background:#f2f2f7;transform:translateX(2px)}.topperWinner{background:linear-gradient(90deg,rgba(255,204,0,.10),transparent)}
+.rank{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#f2f2f7;color:#6e6e73;font-size:12px;font-weight:750;flex:none}.gold{background:rgba(255,204,0,.18);color:#9a7200}.silver{background:rgba(142,142,147,.16);color:#6e6e73}.bronze{background:rgba(175,82,62,.12);color:#a34b38}
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none;background:#e5e5ea;color:#3a3a3c;font-size:12px;font-weight:700}.avatar img{width:100%;height:100%;object-fit:cover}
+.studentInfo{display:flex;flex-direction:column;min-width:0;flex:1}.studentInfo strong{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.studentInfo span{margin-top:2px;font-size:10px;color:#8e8e93}.score{text-align:right}.score strong{display:block;font-size:14px;color:#007aff}.score span{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.04em}
+
+.bell{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,122,255,.10);color:#007aff;font-size:9px;border:1px solid rgba(0,122,255,.07);box-shadow:0 4px 12px rgba(0,122,255,.08)}.rightColumn{position:relative;min-width:0}.rightColumn .sectionHeader{align-items:center}
+.notificationCard{width:100%;border-radius:22px;background:rgba(255,255,255,.88);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 32px rgba(0,0,0,.045);overflow:hidden;isolation:isolate}.notification{display:flex;align-items:flex-start;gap:11px;padding:15px;min-width:0;border-bottom:1px solid rgba(60,60,67,.08);transition:background .15s ease}.notification:hover{background:rgba(0,122,255,.035)}.notification:last-child{border-bottom:0}.notificationIcon{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none;background:rgba(0,122,255,.10);color:#007aff;font-size:14px}.notif_exam{background:rgba(0,122,255,.10);color:#007aff}.notif_student{background:rgba(52,199,89,.11);color:#34a853}.notif_system{background:rgba(88,86,214,.11);color:#5856d6}.notificationBody{min-width:0;flex:1}.notificationBody strong{display:block;font-size:12px;font-weight:650;color:#1c1c1e;line-height:1.25;overflow-wrap:anywhere}.notificationBody p{margin:4px 0 0;font-size:11px;line-height:1.4;color:#6e6e73;overflow-wrap:anywhere}.notificationTime{display:block;margin-top:5px;font-size:9px;color:#aeaeb2;line-height:1.2}.demoNotice{margin-top:9px;padding:10px 12px;border-radius:13px;background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.12);color:#8a5a00;font-size:10px;line-height:1.45}.quickCard{margin-top:22px;border-radius:22px;background:rgba(255,255,255,.88);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 32px rgba(0,0,0,.045);padding:15px;overflow:hidden}.quickCard .sectionHeader{margin:0 2px 9px}.attentionRow{display:grid;grid-template-columns:minmax(0,1fr) auto 18px;align-items:center;gap:10px;min-height:44px;padding:9px 10px;border-radius:13px;color:#3a3a3c;text-decoration:none;transition:background .15s ease,transform .15s ease}.attentionRow:hover{background:#f2f2f7;transform:translateX(2px)}.attentionRow span:first-child{font-size:11px;font-weight:550;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.attentionRow b{min-width:30px;padding:5px 7px;border-radius:999px;background:#f2f2f7;color:#1c1c1e;text-align:center;font-size:11px;font-weight:700}.attentionRow span:last-child{color:#007aff;font-size:14px;text-align:right}
+
+@media(max-width:1100px){.statsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.mainGrid{grid-template-columns:1fr}.rightColumn{max-width:none}}
+@media(max-width:650px){.head{align-items:flex-start;padding-bottom:18px}.title{font-size:27px}.statsGrid{grid-template-columns:1fr 1fr;gap:10px}.statCard{min-height:138px;padding:15px;border-radius:18px}.statValue{font-size:25px}.recentExam{padding:16px;gap:12px}.examOpen{display:none}.toppersCard,.notificationCard,.quickCard,.recentExam{border-radius:19px}.notification{padding:13px}.notificationBody p{font-size:10.5px}.attentionRow{grid-template-columns:minmax(0,1fr) auto 14px;padding:8px}.demoNotice{font-size:9.5px}}
+@media(max-width:440px){.statsGrid{grid-template-columns:1fr}.statCard{min-height:128px}.sectionHeader{align-items:flex-start}.textLink{display:none}}
+@media(prefers-reduced-motion:reduce){.statCard,.recentExam,.topper,.primaryBtn{transition:none}.skeletonNumber{animation:none}}

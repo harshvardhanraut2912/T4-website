@@ -1,0 +1,78 @@
+/* app/admin/xpToppers.module.css  (new file) -- "XP toppers" section on the admin Overview */
+
+.wrap{margin-top:30px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 2px 12px}
+.head h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:#1c1c1e}
+.head p{margin:4px 0 0;font-size:12px;color:#8e8e93}
+.refresh{height:30px;padding:0 12px;border:1px solid rgba(0,122,255,.25);border-radius:999px;background:#fff;color:#007aff;font:inherit;font-size:12px;font-weight:650;cursor:pointer;white-space:nowrap}
+.refresh:hover{background:#eaf3ff}.refresh:disabled{opacity:.6;cursor:default}
+
+.card{position:relative;overflow:hidden;padding:22px 18px 12px;border-radius:22px;background:linear-gradient(180deg,#fffaf0 0%,#fff 38%);border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 32px rgba(0,0,0,.045)}
+.glow{position:absolute;left:50%;top:-90px;width:320px;height:320px;margin-left:-160px;border-radius:50%;background:radial-gradient(circle,rgba(255,204,0,.28),rgba(255,204,0,0) 68%);animation:glowPulse 4s ease-in-out infinite;pointer-events:none}
+@keyframes glowPulse{50%{transform:scale(1.15);opacity:.7}}
+
+/* ---- podium ---- */
+.podium{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:12px;min-height:230px}
+.spot{position:relative;display:flex;flex-direction:column;align-items:center;width:30%;max-width:150px;min-width:0}
+.pAvatar{position:relative;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:#e5e5ea;color:#3a3a3c;font-size:16px;font-weight:750;border:3px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.14);flex:none}
+.pAvatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.p1 .pAvatar{width:68px;height:68px;font-size:20px;border-color:#ffcc00;box-shadow:0 0 0 4px rgba(255,204,0,.22),0 10px 24px rgba(154,114,0,.28)}
+.p2 .pAvatar{border-color:#c7c7cc}.p3 .pAvatar{border-color:#d9a38f}
+.pName{margin-top:8px;max-width:100%;font-size:12.5px;font-weight:700;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pXp{margin:3px 0 8px;font-size:12px;font-weight:750;color:#9a7200;font-variant-numeric:tabular-nums}
+.pillar{display:flex;align-items:flex-start;justify-content:center;width:100%;border-radius:14px 14px 0 0;padding-top:8px;color:#fff;font-size:22px;font-weight:800;transform-origin:bottom}
+.pillar b{font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.2)}
+.p1 .pillar{height:92px;background:linear-gradient(180deg,#ffcc00,#f5a300)}
+.p2 .pillar{height:66px;background:linear-gradient(180deg,#c7c7cc,#9a9aa0)}
+.p3 .pillar{height:48px;background:linear-gradient(180deg,#e2a98f,#b9694b)}
+.crown{position:absolute;top:-24px;font-size:26px;line-height:1;filter:drop-shadow(0 3px 4px rgba(154,114,0,.35))}
+.online{position:absolute;right:1px;bottom:1px;width:11px;height:11px;border-radius:50%;background:#34c759;border:2px solid #fff}
+
+/* start state (before the section is on screen) */
+.wait .spot{opacity:0}
+.wait .row{opacity:0}
+/* play state */
+.go .spot{animation:spotIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:var(--d)}
+.go .pillar{animation:rise .8s cubic-bezier(.2,.9,.3,1) both;animation-delay:var(--d)}
+.go .p1 .crown{animation:crown 2.4s ease-in-out 1.2s infinite}
+.go .p1 .pAvatar{animation:ring 2.6s ease-in-out 1.2s infinite}
+@keyframes spotIn{from{opacity:0;transform:translateY(26px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes crown{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-6px) rotate(6deg)}}
+@keyframes ring{50%{box-shadow:0 0 0 9px rgba(255,204,0,.08),0 10px 24px rgba(154,114,0,.28)}}
+
+/* ---- ranks 4+ ---- */
+.list{margin-top:18px;padding-top:6px;border-top:1px dashed rgba(60,60,67,.14)}
+.row{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:14px;transition:background .15s ease,transform .15s ease}
+.row:hover{background:#f2f2f7;transform:translateX(3px)}
+.go .row{animation:rowIn .5s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(650ms + var(--i) * 90ms)}
+@keyframes rowIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+.rRank{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#f2f2f7;color:#6e6e73;font-size:12px;font-weight:750;flex:none}
+.rAvatar{position:relative;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e5e5ea;color:#3a3a3c;font-size:12px;font-weight:700;flex:none}
+.rAvatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.rInfo{min-width:0;flex:1}
+.rInfo strong{display:block;font-size:13px;font-weight:650;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rInfo span{display:block;margin-top:1px;font-size:10.5px;color:#8e8e93}
+.rBar{height:5px;margin-top:6px;border-radius:5px;background:#eef0f4;overflow:hidden}
+.rBar i{display:block;height:100%;width:var(--w);border-radius:5px;background:linear-gradient(90deg,#ffcc00,#ff9500)}
+.go .rBar i{animation:fill 1s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(800ms + var(--i) * 90ms)}
+.wait .rBar i{width:0}
+@keyframes fill{from{width:0}to{width:var(--w)}}
+.rXp{flex:none;min-width:70px;text-align:right;font-size:13px;font-weight:750;color:#9a7200;font-variant-numeric:tabular-nums}
+
+.err{margin:0 0 10px;padding:12px 14px;border-radius:12px;background:#fff1f0;border:1px solid #ffd1ce;color:#d70015;font-size:13px}
+.empty{margin:0;padding:26px 10px;text-align:center;color:#8e8e93;font-size:13px}
+.skel{display:flex;align-items:flex-end;justify-content:center;gap:12px;height:200px}
+.skel i{display:block;width:26%;max-width:130px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,#e5e5ea,#f2f2f7,#e5e5ea);background-size:200% 100%;animation:sk 1.2s linear infinite}
+.skel i:nth-child(1){height:110px}.skel i:nth-child(2){height:150px}.skel i:nth-child(3){height:85px}
+@keyframes sk{to{background-position:-200% 0}}
+
+@media (max-width:480px){
+  .podium{gap:8px;min-height:215px}
+  .pAvatar{width:46px;height:46px}.p1 .pAvatar{width:58px;height:58px}
+  .rXp{min-width:58px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .glow,.go .p1 .crown,.go .p1 .pAvatar{animation:none}
+  .go .spot,.go .pillar,.go .row,.go .rBar i{animation-duration:.01s;animation-delay:0s}
+}

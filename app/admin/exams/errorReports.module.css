@@ -1,0 +1,76 @@
+/* app/admin/exams/errorReports.module.css  (new file) -- error reports column + inspect view */
+
+/* ---- column ---- */
+.thReports{width:150px;text-align:center!important}
+.tdReports{text-align:center;border-left:1px dashed #e5e5ea}
+.cell{display:inline-flex;align-items:center;gap:8px}
+.count{min-width:30px;height:28px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;font-size:13px;font-weight:800;border:1px solid #d1d1d6;background:#f2f2f7;color:#6e6e73}
+.countBad{background:#fff1f0;border-color:#ffd1ce;color:#d70015}
+.countOk{background:#eafaf0;border-color:#b6e8c4;color:#248a3d}
+.pendingTxt{display:block;margin-top:3px;font-size:11px;font-weight:700;color:#d70015}
+.inspectBtn{height:30px;padding:0 12px;border:1px solid #007aff;border-radius:10px;background:#fff;color:#007aff;font-size:12.5px;font-weight:700;cursor:pointer}
+.inspectBtn:hover{background:#eaf3ff}
+.inspectBtn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---- summary + tabs ---- */
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:8px 14px;border:1px solid #e5e5ea;border-radius:10px;background:#fff;font-size:13px;color:#3a3a3c}
+.pill b{font-size:17px;color:#007aff;margin-right:4px}
+.pillBad b{color:#d70015}
+.pillOk b{color:#248a3d}
+.tabs{display:flex;gap:0;margin-bottom:14px;border:1px solid #d1d1d6;border-radius:10px;width:fit-content;overflow:hidden}
+.tab{height:34px;padding:0 16px;border:0;border-right:1px solid #d1d1d6;background:#fff;color:#007aff;font-size:13px;font-weight:700;cursor:pointer}
+.tab:last-child{border-right:0}
+.tabOn{background:#007aff;color:#fff}
+.searchRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{height:36px;min-width:240px;padding:0 12px;border:1px solid #d1d1d6;border-radius:10px;font-size:14px;outline:none}
+.search:focus{border-color:#007aff}
+
+/* ---- table ---- */
+.row{cursor:pointer}
+.row:hover td{background:#f7f7fa}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:800;border:1px solid #d1d1d6;background:#f7f7fa;color:#3a3a3c}
+.badgeBad{background:#fff1f0;border-color:#ffd1ce;color:#d70015}
+.badgeOk{background:#eafaf0;border-color:#b6e8c4;color:#248a3d}
+.badgeBonus{background:#fff4e0;border-color:#ffe0a3;color:#a05a00}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#6e6e73}
+.trunc{max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---- inspect window ---- */
+.overlay{position:fixed;inset:0;z-index:1000;background:rgba(12,20,56,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{width:100%;max-width:860px;max-height:92vh;display:flex;flex-direction:column;background:#fff;border-radius:10px;box-shadow:0 18px 60px rgba(12,20,56,.35)}
+.mHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #e5e5ea}
+.mTitle{margin:0;font-size:17px;font-weight:800;color:#007aff}
+.mSub{margin:3px 0 0;font-size:12.5px;color:#6e6e73}
+.mX{border:0;background:none;font-size:18px;line-height:1;color:#6e6e73;cursor:pointer;padding:4px}
+.mBody{padding:18px 20px;overflow-y:auto;flex:1}
+.mFoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid #e5e5ea;background:#f7f7fa}
+.footGroup{display:flex;gap:10px;flex-wrap:wrap}
+.h3{margin:0 0 8px;font-size:12px;font-weight:800;color:#3a3a3c;text-transform:uppercase;letter-spacing:.04em}
+.qBox{padding:12px 14px;border:1px solid #e5e5ea;border-radius:8px;background:#f7f7fa;margin-bottom:16px;overflow-x:auto}
+.opt{display:flex;gap:8px;margin-top:8px;font-size:14px;padding:4px 6px;border-radius:10px}
+.optRight{background:#eafaf0;border:1px solid #b6e8c4}
+.optLetter{flex:none;font-weight:800;color:#007aff}
+.ans{margin-top:10px;font-size:13px;font-weight:800;color:#248a3d}
+.sol{margin-top:12px;padding-top:10px;border-top:1px dashed #d1d1d6;font-size:14px}
+.solLabel{font-size:11.5px;font-weight:800;color:#6e6e73;text-transform:uppercase;margin-bottom:4px}
+.repCard{padding:10px 12px;border:1px solid #e5e5ea;border-left:4px solid #d70015;border-radius:8px;margin-bottom:10px}
+.repDone{border-left-color:#248a3d;background:#fafdfb}
+.repTop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#6e6e73}
+.repText{margin:6px 0 8px;font-size:14px;color:#1c1c1e;white-space:pre-wrap;word-break:break-word}
+.btn{height:36px;padding:0 16px;border:1px solid #007aff;border-radius:10px;background:#007aff;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:#0062cc}
+.btnGhost{background:#fff;color:#007aff}
+.btnGhost:hover{background:#eaf3ff}
+.btnBonus{background:#a05a00;border-color:#a05a00}
+.btnBonus:hover{background:#6e4800}
+.btnSm{height:28px;padding:0 12px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin:0 0 12px;padding:10px 12px;border:1px solid #ffd1ce;background:#fff1f0;color:#d70015;font-size:13px;border-radius:10px}
+.ok{margin:0 0 12px;padding:10px 12px;border:1px solid #b6e8c4;background:#eafaf0;color:#248a3d;font-size:13px;border-radius:10px}
+.note{font-size:13px;color:#6e6e73}
+
+@media (max-width:640px){
+  .thReports{width:110px}
+  .cell{flex-direction:column;gap:4px}
+}

@@ -1,0 +1,103 @@
+/* components/admin/adminPanel.module.css
+   Admin frame -- iOS look: frosted light sidebar, pill-shaped active item,
+   translucent top bar, grouped-grey page background. Class names unchanged. */
+
+.root{--blue:#007aff;--blue-dark:#0062cc;--blue-tint:rgba(0,122,255,.12);--navy:#007aff;--ink:#1c1c1e;--muted:#6e6e73;--line:#e5e5ea;--soft:#f2f2f7;--side-w:260px;--top-h:56px;
+  min-height:100vh;background:var(--soft);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.root *{box-sizing:border-box;font-family:inherit}
+
+/* ===== SIDEBAR ===== */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--side-w);background:rgba(249,249,251,.88);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);color:var(--ink);display:flex;flex-direction:column;z-index:1000;overflow-y:auto;border-right:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;padding:14px 18px;height:var(--top-h);min-height:var(--top-h);text-decoration:none;color:var(--ink);background:transparent;margin-bottom:6px}
+.brandLogo{height:34px;width:34px;object-fit:contain;background:#fff;border-radius:10px;padding:2px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.brandWords{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brandText{font-weight:700;font-size:17px;letter-spacing:-.022em;color:var(--ink);white-space:nowrap}
+.brandTag{margin-top:3px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8e8e93}
+
+.nav{flex:1;padding:6px 10px 16px}
+.group{margin-bottom:8px}
+.groupLabel{padding:14px 12px 6px;font-size:12px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:#8e8e93}
+.navBtn{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;margin:2px 0;border:0;border-radius:10px;color:var(--ink);font-size:15px;font-weight:500;letter-spacing:-.01em;text-decoration:none;background:transparent;transition:background .15s ease,color .15s ease,transform .12s ease}
+.navBtn svg{width:19px;height:19px;flex:none;color:var(--blue)}
+.navBtn:hover{background:rgba(60,60,67,.08)}
+.navBtn:active{transform:scale(.98);background:rgba(60,60,67,.14)}
+.navBtnActive,.navBtnActive:hover{background:var(--blue-tint);color:var(--blue);font-weight:600}
+.navBtn:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:0}
+.sideFoot{padding:14px 18px;border-top:1px solid var(--line);font-size:11px;color:#8e8e93;letter-spacing:.02em}
+
+/* ===== MAIN ===== */
+.main{margin-left:var(--side-w);min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:900;height:var(--top-h);background:rgba(255,255,255,.78);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 28px}
+.menuBtn{display:none;align-items:center;justify-content:center;width:38px;height:38px;border:0;border-radius:10px;background:rgba(60,60,67,.08);color:var(--blue);cursor:pointer;padding:0}
+.menuBtn:active{transform:scale(.95)}
+.crumbs{display:flex;align-items:center;gap:8px;font-size:15px;min-width:0}
+.crumbRoot{color:var(--muted);font-weight:500}
+.crumbSep{color:#c7c7cc}
+.crumbLink{color:var(--blue);font-weight:500;text-decoration:none}
+.crumbLink:hover{opacity:.7}
+.crumbNow{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.account{margin-left:auto;display:flex;align-items:center;gap:16px}
+.who{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;min-width:0}
+.whoEmail{font-size:13px;font-weight:600;color:var(--ink);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.whoRole{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#8e8e93;margin-top:3px}
+.logoutBtn{height:36px;padding:0 18px;border:0;border-radius:999px;background:var(--blue-tint);color:var(--blue);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s ease,transform .12s ease}
+.logoutBtn:hover{background:rgba(0,122,255,.2)}
+.logoutBtn:active{transform:scale(.96)}
+.logoutBtn:disabled{opacity:.5;cursor:default}
+.content{flex:1;padding:28px;max-width:1400px;width:100%}
+
+.scrim{display:none}
+
+/* ===== TABLET / MOBILE ===== */
+@media(max-width:900px){
+  .root{--top-h:56px}
+  .sidebar{display:none}
+  .sidebarOpen{display:flex;width:272px;max-width:84vw;box-shadow:0 0 40px rgba(0,0,0,.18)}
+  .scrim.scrimOn{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999}
+  .main{margin-left:0}
+  .menuBtn{display:flex}
+  .topbar{padding:0 14px}
+  .who{display:none}
+  .content{padding:18px 14px}
+}
+@media(prefers-reduced-motion:reduce){.navBtn,.logoutBtn{transition:none}}
+
+/* ===== iOS 26-inspired admin shell refinement ===== */
+.brandMark{height:34px;width:34px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#007aff,#5ac8fa);color:#fff;font-size:17px;font-weight:800;letter-spacing:-.04em;box-shadow:0 5px 14px rgba(0,122,255,.24);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif}
+.root{background:linear-gradient(180deg,#f7f7fb 0%,#f2f2f7 48%,#eeeeF3 100%);}
+.sidebar{background:rgba(250,250,252,.82);border-right:1px solid rgba(60,60,67,.10);box-shadow:8px 0 32px rgba(0,0,0,.025)}
+.brand{height:68px;min-height:68px;padding:12px 16px;border-bottom:1px solid rgba(60,60,67,.07);margin-bottom:4px}
+.brandText{font-size:18px;font-weight:750;color:#1c1c1e}
+.brandTag{color:#8e8e93;font-size:9px}
+.nav{padding:10px 9px 18px}
+.group{margin-bottom:12px}
+.groupLabel{padding:12px 12px 7px;color:#8e8e93;font-size:10px;letter-spacing:.07em}
+.navBtn{height:42px;border-radius:12px;margin:3px 0;gap:11px;color:#3a3a3c;font-size:14px}
+.navBtn svg{width:18px;height:18px;color:#6e6e73}
+.navBtn:hover{background:rgba(60,60,67,.055);color:#1c1c1e}
+.navBtnActive,.navBtnActive:hover{background:rgba(0,122,255,.12);color:#007aff;box-shadow:inset 0 0 0 1px rgba(0,122,255,.035)}
+.navBtnActive svg{color:#007aff}
+.sideFoot{background:rgba(255,255,255,.25);border-top:1px solid rgba(60,60,67,.08)}
+.main{background:transparent}
+.topbar{height:64px;background:rgba(255,255,255,.70);border-bottom:1px solid rgba(60,60,67,.09);box-shadow:0 1px 0 rgba(255,255,255,.7);padding:0 24px}
+.crumbs{font-size:14px}
+.crumbRoot{font-weight:500;color:#8e8e93}
+.crumbNow{font-weight:650;color:#1c1c1e}
+.account{gap:10px}
+.whoEmail{font-size:12px;color:#3a3a3c}
+.whoRole{font-size:9px;color:#8e8e93}
+.logoutBtn{height:36px;padding:0 15px;background:rgba(0,122,255,.10);color:#007aff;border:1px solid rgba(0,122,255,.08);box-shadow:none}
+.logoutBtn:hover{background:rgba(0,122,255,.16)}
+.content{padding:30px 32px 48px;max-width:1500px}
+@media(max-width:900px){.topbar{height:58px;padding:0 14px}.content{padding:20px 14px 34px}.brand{height:62px;min-height:62px}}
+
+/* ===== T4 Academy: horizontal logo already contains the name ===== */
+.brandLogo{height:34px;width:auto;max-width:170px;background:transparent;border-radius:0;padding:0;box-shadow:none}
+.brandWords{padding-left:10px;border-left:1px solid var(--line)}
+.brandTag{margin-top:0;color:#007aff;font-weight:700;font-size:10px}
+:global([data-theme="dark"]) .brandLogo{background:#fff;border-radius:8px;padding:3px 8px}
+
+/* ===== iOS: system blue tag + soft grouped surfaces ===== */
+.brandTag{color:#007aff}
+.sidebar{border-right:1px solid rgba(60,60,67,.1)}
+.navBtnActive,.navBtnActive:hover{border-radius:10px}

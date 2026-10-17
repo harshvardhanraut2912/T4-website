@@ -1,0 +1,176 @@
+/* app/admin/ios-theme.css
+   iOS look for the WHOLE admin panel. Everything is scoped under .ios-admin, which is the
+   wrapper added in app/admin/layout.js, so nothing here can leak to the student pages.
+   Palette: iOS system blue / grouped grey / system red-green-orange, SF-style type,
+   rounded controls, soft shadows, press feedback, and an iOS-style popover for <select>. */
+
+.ios-admin{
+  --ios-blue:#007aff; --ios-blue-press:#0062cc; --ios-blue-tint:rgba(0,122,255,.12);
+  --ios-red:#ff3b30; --ios-green:#34c759; --ios-orange:#ff9500;
+  --ios-bg:#f2f2f7; --ios-card:#ffffff; --ios-sep:#e5e5ea; --ios-sep-strong:#d1d1d6;
+  --ios-label:#1c1c1e; --ios-label2:#6e6e73; --ios-label3:#8e8e93;
+  --ios-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;
+  --ios-ease:cubic-bezier(.22,.8,.3,1);
+}
+
+/* ---------- type: SF-style font via the font variables the pages already use ----------
+   (no blanket override, so code editors / monospace previews keep their own fonts) */
+.ios-admin,
+.ios-admin [class*="__variable_"]{
+  --font-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",system-ui,sans-serif;
+  --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;
+  font-family:var(--ios-font);
+  -webkit-font-smoothing:antialiased;
+}
+.ios-admin :where(button,input,select,textarea){font-family:inherit}
+.ios-admin :where(h1,h2,h3){letter-spacing:-.022em}
+.ios-admin :where(h1){font-weight:700}
+
+/* ---------- buttons: iOS press feedback, pill/rounded shape ---------- */
+.ios-admin :where(button,[role="button"],a[class*="btn" i],a[class*="button" i]){
+  transition:background-color .15s var(--ios-ease),color .15s var(--ios-ease),transform .12s var(--ios-ease),box-shadow .15s var(--ios-ease),opacity .15s var(--ios-ease),border-color .15s var(--ios-ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.ios-admin :where(button):not(:disabled):active{transform:scale(.97)}
+.ios-admin :where(button):disabled{cursor:not-allowed}
+.ios-admin :where(button,a,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:3px solid rgba(0,122,255,.35) !important; outline-offset:1px;
+}
+
+/* ---------- text fields ---------- */
+.ios-admin :where(input):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+.ios-admin :where(textarea),
+.ios-admin :where(select){
+  border-radius:12px !important;
+  transition:border-color .15s var(--ios-ease),box-shadow .15s var(--ios-ease),background-color .15s var(--ios-ease);
+}
+.ios-admin :where(input,textarea,select):focus{
+  border-color:var(--ios-blue) !important;
+  box-shadow:0 0 0 4px rgba(0,122,255,.16) !important;
+  outline:none;
+}
+.ios-admin ::placeholder{color:#aeaeb2;opacity:1}
+.ios-admin :where(input[type="checkbox"],input[type="radio"]){accent-color:var(--ios-blue)}
+.ios-admin :where(input[type="range"]){accent-color:var(--ios-blue)}
+.ios-admin ::selection{background:rgba(0,122,255,.22)}
+
+/* ---------- tables: grouped-list feel ---------- */
+.ios-admin :where(table){border-collapse:separate;border-spacing:0}
+.ios-admin :where(thead th){font-weight:600;letter-spacing:.01em}
+.ios-admin :where(tbody tr){transition:background-color .12s var(--ios-ease)}
+
+/* ---------- modals / popups: sheet-like ---------- */
+.ios-admin :where([role="dialog"],[class*="modal" i]>div[class*="card" i],[class*="modalBox" i],[class*="modalCard" i]){
+  border-radius:20px;
+}
+
+/* ---------- scrollbars: thin, iOS-like ---------- */
+.ios-admin *{scrollbar-width:thin;scrollbar-color:rgba(60,60,67,.3) transparent}
+.ios-admin *::-webkit-scrollbar{width:8px;height:8px}
+.ios-admin *::-webkit-scrollbar-thumb{background:rgba(60,60,67,.28);border-radius:999px;border:2px solid transparent;background-clip:content-box}
+.ios-admin *::-webkit-scrollbar-track{background:transparent}
+
+/* ======================================================================
+   iOS-STYLE DROPDOWN (<select>)
+   Chrome / Edge 135+ support appearance:base-select, which lets the open list be
+   styled: a rounded frosted popover, soft shadow, blue tick on the chosen row.
+   Older browsers ignore this whole block and keep the normal native dropdown.
+   ====================================================================== */
+@supports (appearance: base-select){
+  .ios-admin select,
+  .ios-admin select::picker(select){appearance:base-select}
+
+  .ios-admin select{cursor:pointer}
+  .ios-admin select::picker-icon{
+    content:""; width:7px; height:7px; flex:none; margin-left:6px;
+    border-right:2px solid #8e8e93; border-bottom:2px solid #8e8e93;
+    transform:rotate(45deg) translateY(-2px);
+    transition:transform .2s var(--ios-ease);
+  }
+  .ios-admin select:open::picker-icon{transform:rotate(-135deg) translateY(-2px)}
+
+  .ios-admin select::picker(select){
+    margin-top:6px; padding:6px;
+    background:rgba(255,255,255,.92);
+    -webkit-backdrop-filter:saturate(180%) blur(24px); backdrop-filter:saturate(180%) blur(24px);
+    border:1px solid rgba(60,60,67,.12); border-radius:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.08);
+    max-height:min(340px,60vh); overflow:auto;
+    opacity:0; transform:translateY(-6px) scale(.98); transform-origin:top center;
+    transition:opacity .16s var(--ios-ease),transform .16s var(--ios-ease),overlay .16s allow-discrete,display .16s allow-discrete;
+  }
+  .ios-admin select:open::picker(select){opacity:1;transform:none}
+  @starting-style{
+    .ios-admin select:open::picker(select){opacity:0;transform:translateY(-6px) scale(.98)}
+  }
+
+  .ios-admin select option{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:10px 12px; margin:1px 0; border-radius:10px;
+    font-size:15px; line-height:1.25; color:#1c1c1e; background:transparent;
+    cursor:pointer; transition:background-color .1s linear;
+  }
+  .ios-admin select option:hover,
+  .ios-admin select option:focus-visible{background:rgba(0,122,255,.12);outline:none}
+  .ios-admin select option:checked{color:#007aff;font-weight:600;background:transparent}
+  .ios-admin select option:checked:hover{background:rgba(0,122,255,.12)}
+  .ios-admin select option::checkmark{
+    order:2; content:"✓"; color:#007aff; font-weight:700; font-size:15px;
+  }
+  .ios-admin select option:disabled{color:#aeaeb2;cursor:not-allowed}
+  .ios-admin select optgroup{font-size:12px;font-weight:600;color:#8e8e93;letter-spacing:.03em;text-transform:uppercase;padding:8px 12px 2px}
+  .ios-admin select hr{border:0;border-top:1px solid rgba(60,60,67,.12);margin:4px 8px}
+}
+
+/* respect reduced-motion */
+@media (prefers-reduced-motion:reduce){
+  .ios-admin *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+/* ===== iOS dashboard surface ===== */
+.ios-admin{background:#f2f2f7;color:#1c1c1e}
+.ios-admin ::-webkit-scrollbar-thumb{background:rgba(60,60,67,.24);background-clip:content-box}
+.ios-admin :where(.card,.panel,.section,.statCard,.recentExam,.toppersCard,.notificationCard,.emptyCard){border:1px solid rgba(60,60,67,.08);box-shadow:0 1px 2px rgba(0,0,0,.035),0 12px 34px rgba(0,0,0,.045)}
+
+/* ===== iOS polish pass (T4 Academy admin) ===== */
+.ios-admin{--ios-radius:16px;--ios-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06)}
+
+/* grouped cards: larger radius, hairline border, soft shadow */
+.ios-admin :where(.card,.panel,.section,.statCard,.recentExam,.toppersCard,.notificationCard,.emptyCard,[class*="Card" i]:not(button):not(a):not(input)){
+  border-radius:var(--ios-radius);
+}
+
+/* inset-grouped tables */
+.ios-admin :where(table){background:#fff;border:1px solid rgba(60,60,67,.12);border-radius:14px;overflow:hidden}
+.ios-admin :where(thead th){background:rgba(242,242,247,.9);color:#6e6e73;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid rgba(60,60,67,.12)}
+.ios-admin :where(tbody td){border-bottom:1px solid rgba(60,60,67,.08)}
+.ios-admin :where(tbody tr:last-child td){border-bottom:0}
+.ios-admin :where(tbody tr:hover){background:rgba(0,122,255,.05)}
+
+/* sheets: frosted backdrop + big radius */
+.ios-admin :where([class*="overlay" i],[class*="backdrop" i],[class*="scrim" i]){
+  -webkit-backdrop-filter:blur(8px) saturate(140%);backdrop-filter:blur(8px) saturate(140%);
+}
+.ios-admin :where([role="dialog"],[class*="modalBox" i],[class*="modalCard" i]){
+  border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.28);border:1px solid rgba(60,60,67,.1);
+}
+
+/* iOS-style pill badges / chips */
+.ios-admin :where([class*="badge" i],[class*="chip" i],[class*="pill" i],[class*="tag" i]):not(button):not(input){border-radius:999px}
+
+/* primary buttons: system blue, soft press */
+.ios-admin :where(button[class*="primary" i],button[class*="save" i],button[class*="submit" i]){background-color:var(--ios-blue);color:#fff;border-radius:12px;font-weight:600}
+.ios-admin :where(button[class*="primary" i],button[class*="save" i],button[class*="submit" i]):not(:disabled):hover{background-color:var(--ios-blue-press)}
+
+/* iOS-style switch for plain checkboxes marked role="switch" */
+.ios-admin input[type="checkbox"][role="switch"]{
+  appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:999px;background:#e9e9ea;position:relative;cursor:pointer;border:0;transition:background-color .2s var(--ios-ease);
+}
+.ios-admin input[type="checkbox"][role="switch"]::after{
+  content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.18),0 1px 1px rgba(0,0,0,.16);transition:transform .2s var(--ios-ease);
+}
+.ios-admin input[type="checkbox"][role="switch"]:checked{background:var(--ios-green)}
+.ios-admin input[type="checkbox"][role="switch"]:checked::after{transform:translateX(20px)}
+
+/* large-title feel for page headings */
+.ios-admin :where(main h1,[class*="content" i]>h1,[class*="title" i]:is(h1)){font-size:clamp(26px,3vw,34px);font-weight:700;letter-spacing:-.03em}

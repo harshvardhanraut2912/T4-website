@@ -1,0 +1,47 @@
+/* 📂 SAVE AT: app/training/ultimate.module.css   (NEW FILE)
+   Only the extras Ultimate Practice needs (accuracy cards / bars). Everything else reuses
+   training.module.css, whose .root provides the --tg-* colour variables (light + dark). */
+
+.overall {
+    display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center;
+    padding: 22px; margin-bottom: 18px; border-radius: 18px;
+    background: var(--tg-surface); border: 1px solid var(--tg-line); box-shadow: var(--tg-shadow);
+}
+.ring {
+    --p: 0; width: 132px; height: 132px; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(var(--ring, #3b82f6) calc(var(--p) * 1%), var(--tg-line) 0);
+}
+.ringIn {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--tg-surface);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.ringIn b { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.ringIn span { font-size: 11px; color: var(--tg-muted); font-weight: 700; margin-top: 4px; }
+.overallText h2 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
+.overallText p { margin: 0 0 10px; color: var(--tg-muted); font-size: 13.5px; }
+.miniPills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.subCard {
+    margin-bottom: 14px; border-radius: 16px; overflow: hidden;
+    background: var(--tg-surface); border: 1px solid var(--tg-line); box-shadow: var(--tg-shadow);
+}
+.subHead { padding: 16px 18px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.subHead h3 { margin: 0; font-size: 16px; font-weight: 800; }
+.subHead small { display: block; color: var(--tg-muted); font-size: 12.5px; font-weight: 600; margin-top: 2px; }
+.subPct { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+.bar { height: 8px; background: var(--tg-line); border-radius: 999px; overflow: hidden; margin: 0 18px 14px; }
+.barFill { height: 100%; border-radius: 999px; background: #3b82f6; transition: width .4s ease; }
+
+.good { color: var(--tg-good); } .mid { color: var(--tg-warn); } .low { color: var(--tg-bad); }
+.fillGood { background: #22c55e; } .fillMid { background: #f59e0b; } .fillLow { background: #ef4444; }
+
+.accCell { display: flex; align-items: center; gap: 10px; min-width: 130px; }
+.accCell .bar { flex: 1; margin: 0; height: 6px; min-width: 56px; }
+.accCell b { font-size: 13px; min-width: 46px; text-align: right; }
+
+.note { margin: 14px 2px 0; font-size: 12.5px; color: var(--tg-muted); }
+
+@media (max-width: 560px) {
+    .overall { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .miniPills { justify-content: center; }
+}
