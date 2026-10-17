@@ -20,6 +20,7 @@ export const NAV_GROUPS = [
       { slug: "courses", label: "Courses", icon: "book" },
       { slug: "study-material", label: "Study Material", icon: "folder" },
       { slug: "exams", label: "Exams", icon: "clipboard" },
+      { slug: "performance", label: "Performance", icon: "chart" },
     ],
   },
   {

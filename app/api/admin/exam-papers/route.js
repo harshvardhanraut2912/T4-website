@@ -4,6 +4,11 @@
 //   exam_question_data_v2  -> questions_manifest
 //   exam_answer_keys_v2    -> answer_manifest
 //
+//   GET ?meta=1         -> FAST list (id, name, exam, created) with no manifests and no RPC. The Exams page
+//                          shows these rows at once, then fills in the question counts as they arrive.
+//   GET ?counts=1       -> { counts: { id: question_count } } in one call via the SQL function, or
+//                          { counts: null } when that function is not installed (page then uses ?count=).
+//   GET ?count=<id>     -> { id, question_count } for ONE exam (used one by one, rows appear as they load).
 //   GET                 -> the exam list. METADATA ONLY (name, exam, created, question count);
 //                          the question manifests are never downloaded for the list.
 //   GET ?id=<slug>      -> ONE exam for the preview (its answer_manifest + chapter names).
@@ -61,6 +66,36 @@ async function listExams() {
   }));
 }
 
+
+/* ------------------------------------------- progressive list (Exams page) */
+async function listExamsMeta() {
+  const { data, error } = await supabaseAdmin
+    .from("exam_question_data_v2")
+    .select("id, mock_test_name, mock_slug, exam, created_at")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+async function countsViaRpc() {
+  const { data, error } = await supabaseAdmin.rpc("get_exam_papers_list");
+  if (error) return null;                       // function not installed: caller falls back to ?count=<id>
+  const out = {};
+  for (const r of Array.isArray(data) ? data : []) out[String(r.id)] = Number(r.question_count) || 0;
+  return out;
+}
+
+async function countOne(id) {
+  const { data, error } = await supabaseAdmin
+    .from("exam_question_data_v2")
+    .select("questions_manifest")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) return null;
+  return asArray(data.questions_manifest).length;
+}
+
 /* --------------------------------------------------------------- preview */
 async function loadExam(id) {
   const { data: row, error } = await supabaseAdmin
@@ -88,7 +123,15 @@ async function loadExam(id) {
 export async function GET(request) {
   try {
     if (!(await requireAdmin(request))) return forbidden();
-    const id = new URL(request.url).searchParams.get("id");
+    const sp = new URL(request.url).searchParams;
+    if (sp.get("meta")) return NextResponse.json({ exams: await listExamsMeta() });
+    if (sp.get("counts")) return NextResponse.json({ counts: await countsViaRpc() });
+    if (sp.get("count")) {
+      const n = await countOne(sp.get("count"));
+      if (n === null) return NextResponse.json({ error: "Exam not found." }, { status: 404 });
+      return NextResponse.json({ id: sp.get("count"), question_count: n });
+    }
+    const id = sp.get("id");
     if (!id) return NextResponse.json({ exams: await listExams() });
 
     const exam = await loadExam(id);

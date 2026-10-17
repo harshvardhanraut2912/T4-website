@@ -1,7 +1,8 @@
 // app/admin/exams/page.js  (replace the existing file)
 //
 // Exams home. A table of saved exams (metadata only -- no questions are downloaded
-// for the list). The eye button swaps this screen for the exam preview (same page,
+// for the list). Loads PROGRESSIVELY: the rows appear at once (fast metadata query), then each
+// exam's question count fills in as it arrives -- nothing waits for the whole list. The eye button swaps this screen for the exam preview (same page,
 // the URL never changes).
 //
 // PDF column: the PDF icon opens a small window (/exams/pdf) where the admin sets the
@@ -83,15 +84,52 @@ export default function ExamsPage() {
   const [reportsOf, setReportsOf] = useState(null); // { id, name } exam whose error reports are open
   const [reportCounts, setReportCounts] = useState({ status: "loading", map: {} }); // exam id -> { total, pending }
 
+  const [counts, setCounts] = useState({}); // exam id -> question count (filled in one by one)
+
   useEffect(() => {
     let alive = true;
-    fetch("/api/admin/exam-papers", { cache: "no-store" })
-      .then(async (res) => {
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || "Failed to load exams.");
-        if (alive) setList({ status: "ready", exams: data.exams || [], error: "" });
-      })
-      .catch((e) => { if (alive) setList({ status: "error", exams: [], error: e.message || "Failed to load exams." }); });
+    const getJson = async (url) => {
+      const res = await fetch(url, { cache: "no-store" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Failed to load exams.");
+      return data;
+    };
+    setCounts({});
+
+    (async () => {
+      let exams;
+      try {
+        // 1. rows first: names / type / created, no manifests, so this returns almost instantly
+        exams = (await getJson("/api/admin/exam-papers?meta=1")).exams || [];
+      } catch (e) {
+        if (alive) setList({ status: "error", exams: [], error: e.message || "Failed to load exams." });
+        return;
+      }
+      if (!alive) return;
+      setList({ status: "ready", exams, error: "" });
+
+      // 2. question counts: all at once if the SQL function exists ...
+      try {
+        const bulk = (await getJson("/api/admin/exam-papers?counts=1")).counts;
+        if (bulk) { if (alive) setCounts(bulk); return; }
+      } catch { /* fall through to one-by-one */ }
+
+      // 3. ... otherwise exam by exam (3 at a time); each count appears the moment it is ready
+      const queue = exams.map((x) => x.id);
+      const worker = async () => {
+        while (alive && queue.length) {
+          const id = queue.shift();
+          try {
+            const r = await getJson(`/api/admin/exam-papers?count=${encodeURIComponent(id)}`);
+            if (alive) setCounts((c) => ({ ...c, [id]: r.question_count }));
+          } catch {
+            if (alive) setCounts((c) => ({ ...c, [id]: null }));   // shows a dash, the rest keep loading
+          }
+        }
+      };
+      await Promise.all([worker(), worker(), worker()]);
+    })();
+
     return () => { alive = false; };
   }, [reloadKey]);
 
@@ -212,7 +250,11 @@ export default function ExamsPage() {
                     <div className={s.examSlug}>{e.mock_slug || e.id}</div>
                   </td>
                   <td><span className={s.chStd}>{e.exam || "-"}</span></td>
-                  <td className={s.tdNum}>{fmt(e.question_count)}</td>
+                  <td className={s.tdNum}>
+                    {counts[e.id] === undefined
+                      ? <span className={d.skeleton} style={{ width: 40, height: 18 }} aria-label="Counting" />
+                      : counts[e.id] === null ? "-" : fmt(counts[e.id])}
+                  </td>
                   <td className={s.tdDate}>{fmtDate(e.created_at)}</td>
                   <td className={s.tdRegen}>
                     <button
