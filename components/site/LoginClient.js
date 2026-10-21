@@ -6,7 +6,7 @@ import { Ico } from './icons';
 import { SITE } from '@/lib/siteConfig';
 import s from './login.module.css';
 
-// T4 Academy sign-in.
+// Sign-in.
 //  - "Continue with Google" -> Supabase OAuth, returning straight to /dashboard
 //  - any live session on this page -> session cookie is synced (respecting the
 //    cookie-consent choice) and the student is sent to /dashboard
@@ -74,12 +74,12 @@ export default function LoginClient() {
       {/* LEFT: brand panel */}
       <section className={s.panel}>
         <div className={s.brand}>
-          <img className={s.brandLogo} src={SITE.logo} alt="T4 Academy" />
+          <img className={s.brandLogo} src={SITE.logo} alt="Logo" />
         </div>
 
         <div className={s.mid}>
           <span className={s.pill}>Student portal</span>
-          <h1 className={s.h1}>More than a coaching class. <em>Your academy.</em></h1>
+          <h1 className={s.h1}>Learn smarter. <em>Practise better.</em></h1>
           <p className={s.lead}>Sign in to open your batches, attempt tests, review your performance and study from organised notes, all in one place.</p>
           <ul className={s.features}>
             {FEATURES.map((f) => (
@@ -91,7 +91,7 @@ export default function LoginClient() {
           </ul>
         </div>
 
-        <p className={s.copy}>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
+        <p className={s.copy}>© {new Date().getFullYear()} All rights reserved.</p>
       </section>
 
       {/* RIGHT: sign-in */}
@@ -102,7 +102,7 @@ export default function LoginClient() {
 
         <div className={s.card}>
           <img className={s.cardLogo} src={SITE.logo} alt="" />
-          <h2 className={s.head}>Welcome to T4 Academy</h2>
+          <h2 className={s.head}>Welcome</h2>
           <p className={s.sub}>Sign in with your Google account to continue to your dashboard. Your student account is created automatically the first time you sign in.</p>
 
           <button type="button" className={s.google} onClick={signIn} disabled={loading}>
@@ -128,7 +128,7 @@ export default function LoginClient() {
             <li><Ico name="bolt" size={15} /> Instant access</li>
           </ul>
 
-          <p className={s.note}>Use the Google account registered with T4 Academy. Need help? Contact your academy administrator.</p>
+          <p className={s.note}>Use the Google account registered with your institute. Need help? Contact your administrator.</p>
         </div>
       </section>
     </div>

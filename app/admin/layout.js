@@ -256,7 +256,7 @@ function AdminLayoutInner({ children }) {
         <div className={shell.gateBrand}>
           <img
             src="/images/other_images/class-logo.png"
-            alt="T4 Academy"
+            alt="Logo"
             className={shell.gateLogo}
           />
           <div>

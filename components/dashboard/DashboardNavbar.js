@@ -54,10 +54,10 @@ export default function DashboardNavbar({ session, onLogout, onHamburgerClick })
                         <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                     </svg>
                 </button>
-                <a href="/dashboard" className={styles.brand} aria-label="T4 Academy dashboard">
+                <a href="/dashboard" className={styles.brand} aria-label="Student dashboard">
                     <img
                         src="/images/other_images/class-logo.png"
-                        alt="T4 Academy"
+                        alt="Logo"
                         className={styles.brandImage}
                     />
                     <span className={styles.brandWords}>

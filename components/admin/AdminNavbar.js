@@ -50,7 +50,7 @@ export default function AdminNavbar({ fontClass = '', onLogout, loggingOut = fal
         <a href="/admin" className={s.brand}>
           <img
             src="/images/other_images/class-logo.png"
-            alt="T4 Academy"
+            alt="Logo"
             className={s.brandLogo}
           />
           <span className={s.brandWords}>

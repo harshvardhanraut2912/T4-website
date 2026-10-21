@@ -139,12 +139,10 @@ export async function proxy(request, context) {
   const isRealAdminPagePath = pathname === '/admin' || pathname.startsWith('/admin/');
   const isApiRequest = pathname.startsWith('/api/') || pathname === '/api';
 
-  // The public homepage was removed, so the bare root goes to the student dashboard
-  // (a visitor without a session is bounced on to /login by the protected-path check below).
+  // The main-domain root (/) is the public Parikshiq homepage.
+  // Do not redirect visitors to /dashboard here; student dashboard access
+  // remains available explicitly at /dashboard and keeps its existing auth gate.
   // /admin is reached ONLY by opening an /admin URL (or the admin.<domain> host) directly.
-  if (!isAdminHost && pathname === '/') {
-    return NextResponse.redirect(new URL('/dashboard', request.url), 307);
-  }
 
   // CUSTOM-DOMAIN COMPATIBILITY:
   // Keep the admin panel at /admin on the primary domain. Redirecting
@@ -374,6 +372,7 @@ export async function proxy(request, context) {
     '/not_live', '/not_live.html',
     '/profile',
     '/contact',
+    '/purchase',
     // /cources is now an app-router page (app/cources/page.js). '/cources.html'
     // is deliberately NOT listed: if it were, the '.html' rewrite further down
     // would send /cources to the (deleted) static file and 404.

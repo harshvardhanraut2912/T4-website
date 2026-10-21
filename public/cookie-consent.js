@@ -182,9 +182,9 @@
         </svg>
       </div>
       <div class="cc-body">
-        <h3>A pinch of cookies, for a smoother class</h3>
+        <h3>A pinch of cookies, for a smoother experience</h3>
         <p>
-          Bihani Chemistry Classes uses cookies to keep you signed in and remember your
+          This site uses cookies to keep you signed in and remember your
           preferences. If you decline, your login won't be saved once you
           close the site. Read our
           <a href="/privacypolicy">Privacy Policy</a>.

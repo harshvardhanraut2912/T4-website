@@ -181,8 +181,7 @@ export default function ProfilePage() {
     <div className="pf">
       <header className="pf-topbar">
         <a href="/dashboard" className="pf-brand" aria-label="Return to Dashboard">
-          <img src="/images/other_images/class-logo.png" alt="T4 Academy" />
-          <span>T4 Academy</span>
+          <img src="/images/other_images/class-logo.png" alt="Logo" />
         </a>
         <a href="/dashboard" className="pf-topbar-dashboard">
           <Glyph name="back" />

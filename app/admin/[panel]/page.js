@@ -12,7 +12,7 @@ import s from "../dashboard.module.css";
 export async function generateMetadata({ params }) {
   const { panel } = await params;
   const item = NAV_ITEMS.find((i) => i.slug && i.slug === panel);
-  return { title: `${item ? item.label : "Page"} | Admin Panel` };
+  return { title: `${item ? item.label : "Page"} | Admin Portal` };
 }
 
 export default async function AdminDemoPanel({ params }) {

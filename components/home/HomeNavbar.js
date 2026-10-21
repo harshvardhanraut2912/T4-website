@@ -56,11 +56,7 @@ export default function HomeNavbar({ fontClass = '' }) {
     <div className={`${styles.navWrap} ${fontClass}`}>
       <nav className={styles.nav}>
         <a href="/" className={styles.brand}>
-          <img src="/images/other_images/class-logo.png" alt="T4 Academy logo" className={styles.brandLogo} />
-          <span className={styles.brandWords}>
-            <span className={styles.brandText}>T4 Academy</span>
-            <span className={styles.brandTag}>Learning made simple</span>
-          </span>
+          <img src="/images/other_images/class-logo.png" alt="Logo" className={styles.brandLogo} />
         </a>
         <div className={styles.links}>
           {LINKS.map((l) => (<a key={l.url} href={l.url} className={styles.link}>{l.label}</a>))}

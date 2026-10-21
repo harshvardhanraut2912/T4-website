@@ -4,8 +4,8 @@ import PresenceTracker from '@/components/common/PresenceTracker';
 import ProfileOnboarding from '@/components/onboarding/ProfileOnboarding';
 
 export const metadata = {
-  title: 'T4 Academy | More Than A Coaching Class',
-  description: 'T4 Academy student portal and online test platform.',
+  title: 'Parikshiq | Prepare smarter. Perform better.',
+  description: 'A focused learning and exam practice platform for students. Practise with purpose and progress with confidence.',
   icons: {
     icon: '/images/other_images/class-logo.png',
     shortcut: '/images/other_images/class-logo.png',

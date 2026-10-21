@@ -37,10 +37,10 @@ export async function GET(request) {
 
   const html = `<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Opening T4 Classes…</title>
+<title>Opening app…</title>
 <style>body{font-family:system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;background:#f4f7fc;color:#14213d;text-align:center;padding:24px}
 a{display:inline-block;margin-top:18px;padding:14px 22px;border-radius:12px;background:#2563eb;color:#fff;text-decoration:none;font-weight:700}</style>
-</head><body><div><h2>Signing you in…</h2><p>Returning to the T4 Classes app.</p>
+</head><body><div><h2>Signing you in…</h2><p>Returning to the app.</p>
 <a href="${esc(dest)}">Open the app</a></div>
 <script>window.location.replace(${JSON.stringify(dest).replace(/</g, "\\u003c")});</script></body></html>`;
 

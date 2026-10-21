@@ -516,7 +516,7 @@ export default function ProfileOnboarding() {
                         <span className="ob-icon-dot" />
                     </div>
                     <div className="ob-tag">
-                        <b>Bihani Chemistry Classes</b>
+                        <b>Profile setup</b>
                         <span>Step {stepIndex + 1} of {STEPS.length}</span>
                     </div>
                 </div>

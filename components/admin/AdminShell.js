@@ -71,7 +71,7 @@ export default function AdminShell({ children, onLogout, loggingOut = false }) {
         <Link href={hrefFor("")} className={p.brand} onClick={() => setOpen(false)}>
           <img
             src="/images/other_images/class-logo.png"
-            alt="T4 Academy"
+            alt="Logo"
             className={p.brandLogo}
           />
           <span className={p.brandWords}>
@@ -102,7 +102,7 @@ export default function AdminShell({ children, onLogout, loggingOut = false }) {
           ))}
         </nav>
 
-        <div className={p.sideFoot}>T4 Academy &middot; Admin</div>
+        <div className={p.sideFoot}>Admin</div>
       </aside>
 
       {/* ============ MAIN AREA ============ */}

@@ -141,11 +141,11 @@
 
         <div class="adp-header">
           <div class="adp-icon-wrap">
-            <img src="/images/other_images/bihaniclasses-logo.png" alt="Bihani Chemistry Classes" />
+            <img src="/images/other_images/class-logo.png" alt="App icon" />
           </div>
           <div>
-            <div class="adp-title">Bihani Chemistry Classes</div>
-            <div class="adp-dev">Bihani Classes • Student App</div>
+            <div class="adp-title">Student App</div>
+            
             <div class="adp-meta-row">
               <span>Education</span>
               <span class="adp-meta-sep"></span>
@@ -154,7 +154,7 @@
           </div>
         </div>
 
-        <div class="adp-sub">Watch lectures, attempt chapter tests and track your chemistry progress faster with the official Bihani Classes student app.</div>
+        <div class="adp-sub">Watch lectures, attempt chapter tests and track your progress faster with the official student app.</div>
 
         <a href="/android/download" id="app-download-popup-cta" class="adp-btn">Install</a>
         <button class="adp-later" id="app-download-popup-later">Maybe later</button>

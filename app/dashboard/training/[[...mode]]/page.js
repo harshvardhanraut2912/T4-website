@@ -9,7 +9,7 @@ import TrainingClient from '@/app/training/TrainingClient';
 import UltimateClient from '@/app/training/UltimateClient';
 
 export const metadata = {
-  title: 'Training | T4 Academy',
+  title: 'Training',
   description: 'SpeedRun, FreeFlow and Ultimate Practice.',
 };
 

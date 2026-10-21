@@ -6,12 +6,14 @@
 //   2. Unlocked: two sub-panels
 //        - Subject access  (per-admin Physics / Chemistry / Mathematics / Biology switches)
 //        - Maintenance     (website + app switches, no extra password)
+//        - Purchase enquiries (institutes that filled /purchase; table p_enquiry)
 // The server re-checks the developer cookie on every call, so this UI is only a
 // convenience. Closing the tab / leaving the section locks it again.
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
 import s from "./settings.module.css";
+import EnquiryReports from "./EnquiryReports";
 
 async function api(url, options) {
   const res = await fetch(url, { cache: "no-store", ...options });
@@ -276,9 +278,12 @@ export default function DevPanel() {
       <div className={s.subTabs} role="tablist">
         <button type="button" role="tab" aria-selected={sub === "access"} className={`${s.subTab} ${sub === "access" ? s.subTabOn : ""}`} onClick={() => setSub("access")}>Subject access</button>
         <button type="button" role="tab" aria-selected={sub === "maintenance"} className={`${s.subTab} ${sub === "maintenance" ? s.subTabOn : ""}`} onClick={() => setSub("maintenance")}>Maintenance mode</button>
+        <button type="button" role="tab" aria-selected={sub === "enquiries"} className={`${s.subTab} ${sub === "enquiries" ? s.subTabOn : ""}`} onClick={() => setSub("enquiries")}>Purchase enquiries</button>
       </div>
       <div className={s.cardBody}>
-        {sub === "access" ? <SubjectAccess onExpired={onExpired} /> : <Maintenance onExpired={onExpired} />}
+        {sub === "access" && <SubjectAccess onExpired={onExpired} />}
+        {sub === "maintenance" && <Maintenance onExpired={onExpired} />}
+        {sub === "enquiries" && <EnquiryReports onExpired={onExpired} />}
       </div>
     </section>
   );

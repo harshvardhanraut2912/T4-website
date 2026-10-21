@@ -58,9 +58,8 @@ async function generateAndDownloadReceipt(receipt) {
     const green = [16,  185, 129];
     const line  = [203, 220, 232];
 
-    // ── Letterhead: logo + big "T4 Academy" headline (left), contact (right) ──
-    const logoURL = await toDataURL('/images/other_images/ynclasses-logo.png')
-        || await toDataURL('/images/other_images/ynclasses-logo.svg');
+    // ── Letterhead: logo (left) ──
+    const logoURL = await toDataURL('/images/other_images/class-logo.png');
 
     let textX = margin;
     if (logoURL) {
@@ -72,17 +71,6 @@ async function generateAndDownloadReceipt(receipt) {
         textX = margin + logoW + 14;
     }
 
-    // Big brand headline, vertically centered against the logo block
-    doc.setFontSize(24).setFont('helvetica', 'bold').setTextColor(...blue);
-    doc.text('T4 Academy', textX, y + 22);
-    doc.setFontSize(9).setFont('helvetica', 'normal').setTextColor(...muted);
-    doc.text('Coaching for CET & Board Excellence', textX, y + 37);
-
-    // Company contact info (right-aligned)
-    doc.setFontSize(8).setTextColor(...muted);
-    doc.text('ynclassses2016@gmail.com', W - margin, y + 8,  { align: 'right' });
-    doc.text('+91 96194 15869',          W - margin, y + 19, { align: 'right' });
-    doc.text('ynclasses.in',             W - margin, y + 30, { align: 'right' });
     y += 58;
 
     // ── Divider ───────────────────────────────────────────────────────────────
@@ -176,10 +164,9 @@ async function generateAndDownloadReceipt(receipt) {
     const pageH = doc.internal.pageSize.getHeight();
     doc.setDrawColor(...line).line(margin, pageH - 36, W - margin, pageH - 36);
     doc.setFontSize(8).setTextColor(...muted);
-    doc.text('T4 Academy  ·  More Than A Coaching Class', margin, pageH - 22);
     doc.text('Page 1 of 1', W - margin, pageH - 22, { align: 'right' });
 
-    doc.save(`YNClasses_Receipt_${receipt.paymentId}.pdf`);
+    doc.save(`Receipt_${receipt.paymentId}.pdf`);
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
