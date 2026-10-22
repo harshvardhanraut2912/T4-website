@@ -48,6 +48,13 @@ const platforms = [
   { title: 'Institute website', label: 'For every screen', text: 'A website and student portal that carry your institute’s name and look.', glyph: '↗' },
 ];
 
+const pricePoints = [
+  { label: 'Student-wise · Monthly', price: '25', unit: 'per student / month' },
+  { label: 'Student-wise · Yearly', price: '250', unit: 'per student / year' },
+  { label: 'Up to 150 students', price: '20,000', unit: 'per year' },
+  { label: 'Unlimited students', price: '30,000', unit: 'per year', dark: true },
+];
+
 export default function HomePage() {
   return (
     <main className={styles.site}>
@@ -68,10 +75,11 @@ export default function HomePage() {
           <a href="#flow">Exam flow</a>
           <a href="#student-app">Student app</a>
           <a href="#reports">Reports</a>
+          <a href="/pricing">Pricing</a>
         </nav>
         <div className={styles.headerActions}>
           <a className={styles.loginLink} href="/login">Student login <span>↗</span></a>
-          <a className={styles.primaryButton} href="/purchase">Get Parikshiq <span>→</span></a>
+          <a className={styles.primaryButton} href="/purchase?demo=1">Get free demo <span>→</span></a>
         </div>
       </header>
 
@@ -82,8 +90,9 @@ export default function HomePage() {
           <h1>Your institute.<br />Your exams.<br /><span>Your brand.</span></h1>
           <p className={styles.heroText}>Run online tests, check OMR sheets from the teacher app, print question papers in your format and give students a practice app. Our engine works behind the scenes. Students only ever see your name.</p>
           <div className={styles.heroButtons}>
-            <a className={styles.primaryButton} href="#flow">See how an exam runs <span>→</span></a>
-            <a className={styles.secondaryButton} href="#platforms"><span className={styles.playIcon}>▶</span> Your apps and website</a>
+            <a className={styles.primaryButton} href="/purchase?demo=1">Get free demo <span>→</span></a>
+            <a className={styles.pricingButton} href="/pricing">See our pricing <span>₹</span></a>
+            <a className={styles.secondaryButton} href="#flow"><span className={styles.playIcon}>▶</span> See how an exam runs</a>
           </div>
           <div className={styles.heroNote}><span className={styles.checkCircle}>✓</span> Built for teachers, institute teams and students.</div>
         </div>
@@ -188,6 +197,27 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className={styles.priceTeaser} id="pricing" data-reveal>
+        <div className={styles.ptHead}>
+          <span className={styles.sectionLabel}>Simple pricing</span>
+          <h2>Pay per student, or one flat price.</h2>
+          <p>Every plan includes the student app, the teacher admin app and the website.</p>
+        </div>
+        <div className={styles.ptGrid}>
+          {pricePoints.map((p, k) => (
+            <a href="/pricing" className={`${styles.ptCard} ${p.dark ? styles.ptDark : ''}`} key={p.label} style={{ '--n': k }}>
+              <span>{p.label}</span>
+              <strong><i>₹</i>{p.price}</strong>
+              <small>{p.unit}</small>
+            </a>
+          ))}
+        </div>
+        <div className={styles.ptActions}>
+          <a href="/pricing" className={styles.primaryButton}>See our pricing <span>→</span></a>
+          <a href="/purchase?demo=1" className={styles.ptLink}>or get a free demo first <span>↗</span></a>
+        </div>
+      </section>
+
       <section className={styles.platformSection} id="platforms">
         <div className={styles.sectionIntro}>
           <span className={styles.sectionLabel}>Three connected products</span>
@@ -206,7 +236,10 @@ export default function HomePage() {
         </div>
         <div className={styles.buildBanner}>
           <div><span className={styles.sectionLabel}>Built around your institute</span><h3>Want your own app and website?</h3><p>We set up the platform with your name, logo and colours, so students see your institute and nothing else.</p></div>
-          <a href="/purchase" className={styles.primaryButton}>Talk to us <span>→</span></a>
+          <div className={styles.bannerBtns}>
+            <a href="/purchase?demo=1" className={styles.primaryButton}>Get free demo <span>→</span></a>
+            <a href="/pricing" className={styles.outlineButton}>See pricing <span>→</span></a>
+          </div>
         </div>
       </section>
 
@@ -214,13 +247,16 @@ export default function HomePage() {
         <div className={styles.ctaPattern} />
         <div className={styles.ctaLogo}><Image src="/images/other_images/Parikshiq-name.png" alt="Parikshiq" width={160} height={160} /></div>
         <div className={styles.ctaCopy}><span>For coaching institutes</span><h2>Let’s build your institute’s exam platform.</h2><p>Online exams, OMR checking, question PDFs and student apps, all under your own brand.</p></div>
-        <a href="/purchase" className={styles.ctaButton}>Get started <span>→</span></a>
+        <div className={styles.ctaBtns}>
+          <a href="/purchase?demo=1" className={styles.ctaButton}>Get free demo <span>→</span></a>
+          <a href="/pricing" className={styles.ctaGhost}>See our pricing <span>→</span></a>
+        </div>
       </section>
 
       <footer className={styles.footer}>
         <a href="/" className={styles.footerBrand}><Image src="/images/other_images/class-logo.png" alt="" width={38} height={38} /><span>Parikshiq<span className={styles.brandDot}>.</span></span></a>
         <p>Exam technology and digital tools for coaching institutes.</p>
-        <div><a href="#solutions">Solutions</a><a href="#flow">Exam flow</a><a href="/login">Student login</a></div>
+        <div><a href="#solutions">Solutions</a><a href="#flow">Exam flow</a><a href="/pricing">Pricing</a><a href="/login">Student login</a></div>
         <span className={styles.copyright}>© {new Date().getFullYear()} Parikshiq</span>
       </footer>
     </main>

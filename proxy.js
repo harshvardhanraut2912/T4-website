@@ -373,6 +373,7 @@ export async function proxy(request, context) {
     '/profile',
     '/contact',
     '/purchase',
+    '/pricing',
     // /cources is now an app-router page (app/cources/page.js). '/cources.html'
     // is deliberately NOT listed: if it were, the '.html' rewrite further down
     // would send /cources to the (deleted) static file and 404.

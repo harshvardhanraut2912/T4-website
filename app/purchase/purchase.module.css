@@ -85,3 +85,40 @@
 
 @media(max-width:860px){.stage{grid-template-columns:1fr;gap:10px;padding-top:16px}.right{display:none}.left{min-height:0}.row2{grid-template-columns:1fr}.enter{display:none}}
 @media(prefers-reduced-motion:reduce){.page *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* Shown when the visitor arrives from "Get free demo" or a plan on /pricing */
+.intentTag{display:inline-block;margin:0 10px 12px 0;padding:6px 12px;border-radius:100px;background:color-mix(in srgb,var(--ac) 12%,#fff);color:var(--ac);font-size:12px;font-weight:700;letter-spacing:.01em;transition:color .8s,background .8s}
+
+/* ---------- Students timeline + plan choice ---------- */
+.timeline{width:100%;max-width:640px}
+.tlValue{display:flex;align-items:baseline;gap:12px;margin-bottom:34px}
+.tlValue strong{font-family:var(--font-display),sans-serif;font-weight:800;font-size:clamp(46px,6vw,76px);line-height:1;letter-spacing:-.04em;color:var(--ac);transition:color .8s}
+.tlValue span{font-size:18px;font-weight:600;color:#5d6280}
+.tlPop{display:inline-block;animation:bump .3s}
+.tlTrack{position:relative;height:64px;margin:0 14px}
+.tlTrack:before{content:"";position:absolute;left:0;right:0;top:14px;height:6px;border-radius:6px;background:#1e245a18}
+.tlZone{position:absolute;left:0;top:10px;height:14px;border-radius:8px;background:color-mix(in srgb,var(--ac) 12%,transparent);border:1px dashed color-mix(in srgb,var(--ac) 40%,transparent)}
+.tlFill{position:absolute;left:0;top:14px;height:6px;border-radius:6px;background:var(--ac);transition:width .12s linear,background .8s}
+.tlNode{position:absolute;top:0;transform:translateX(-50%);width:34px;padding:0;border:0;background:none;cursor:pointer;font:inherit;display:flex;flex-direction:column;align-items:center;gap:12px;z-index:3}
+.tlNode i{width:16px;height:16px;margin-top:9px;border-radius:50%;background:#fff;border:3px solid #cfd3e8;transition:border-color .25s,background .25s,transform .2s}
+.tlNode em{font-style:normal;font-size:12px;font-weight:700;color:#7a7fa0;white-space:nowrap;transition:color .25s}
+.tlOn i{border-color:var(--ac);background:var(--ac)}.tlOn em{color:#161a30}
+.tlNode:hover i{transform:scale(1.25)}
+.tlThumb{position:absolute;top:5px;width:24px;height:24px;margin-left:-12px;border-radius:50%;background:#fff;border:4px solid var(--ac);box-shadow:0 6px 16px -4px var(--ac);pointer-events:none;z-index:4;transition:left .12s linear,border-color .8s}
+.tlRange{position:absolute;left:-14px;right:-14px;top:0;width:calc(100% + 28px);height:34px;margin:0;opacity:0;cursor:grab;z-index:2}
+.tlRange:focus-visible~.tlThumb,.tlTrack:has(.tlRange:focus-visible) .tlThumb{outline:3px solid color-mix(in srgb,var(--ac) 40%,transparent);outline-offset:3px}
+.tlNote{margin:22px 0 0;font-size:14px;color:#5d6280}
+
+.planList{display:grid;gap:10px;width:100%;max-width:640px}
+.planOpt{font:inherit;text-align:left;display:grid;grid-template-columns:22px 1fr auto;gap:14px;align-items:center;padding:14px 18px;background:#fff;border:1.5px solid #dfe2f0;border-radius:16px;cursor:pointer;color:#161a30;transition:transform .2s,border-color .25s,box-shadow .25s,background .25s}
+.planOpt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ac)}
+.planOpt:disabled{opacity:.5;cursor:not-allowed}
+.planOn{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,#fff);box-shadow:0 12px 28px -14px var(--ac)}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid #c6cae0;display:grid;place-items:center;transition:border-color .25s}
+.radio:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ac);transform:scale(0);transition:transform .25s}
+.planOn .radio{border-color:var(--ac)}.planOn .radio:after{transform:scale(1)}
+.planMain strong{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:16px}
+.planMain em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--ac);padding:3px 8px;border-radius:100px}
+.planMain small,.planEst small{display:block;font-size:12.5px;color:#6b7090;margin-top:2px}
+.planEst{text-align:right}.planEst b{font-size:17px;font-family:var(--font-display),sans-serif}
+@media(max-width:560px){.planOpt{grid-template-columns:22px 1fr;}.planEst{grid-column:2;text-align:left}.tlNode em{font-size:11px}}

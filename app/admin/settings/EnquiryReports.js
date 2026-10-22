@@ -10,6 +10,9 @@ const fmt = (v) => {
   const d = v ? new Date(v) : null;
   return d && !Number.isNaN(d.getTime()) ? d.toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-";
 };
+const planText = (r) => r.plan_label || (r.plan ? r.plan : "");
+const money = (n) => (n || n === 0 ? "₹" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "");
+const SRC = { demo: "Free demo", pricing: "From pricing page", direct: "Direct" };
 const STATUS = { new: "New", contacted: "Contacted", closed: "Closed" };
 
 export default function EnquiryReports({ onExpired }) {
@@ -43,7 +46,7 @@ export default function EnquiryReports({ onExpired }) {
   const rows = useMemo(() => {
     const t = q.trim().toLowerCase();
     return state.rows.filter((r) => (tab === "all" || r.status === tab) &&
-      (!t || [r.institute_name, r.owner_name, r.email, r.phone, r.city].some((x) => String(x || "").toLowerCase().includes(t))));
+      (!t || [r.institute_name, r.owner_name, r.email, r.phone, r.city, r.plan_label, r.plan].some((x) => String(x || "").toLowerCase().includes(t))));
   }, [state.rows, tab, q]);
 
   async function patch(id, body) {
@@ -82,13 +85,14 @@ export default function EnquiryReports({ onExpired }) {
       ) : (
         <div className={s.tableWrap}>
           <table className={s.table}>
-            <thead><tr><th>Institute</th><th>Contact</th><th>Where</th><th>Students</th><th>Received</th><th>Status</th></tr></thead>
+            <thead><tr><th>Institute</th><th>Contact</th><th>Where</th><th>Plan</th><th>Students</th><th>Received</th><th>Status</th></tr></thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} onClick={() => openRow(r)} className={r.status === "new" ? s.unread : ""}>
                   <td><strong>{r.institute_name}</strong><span>{r.institute_type || "-"}</span></td>
                   <td><strong>{r.owner_name}</strong><span>{r.phone}</span></td>
                   <td>{[r.city, r.state].filter(Boolean).join(", ") || "-"}</td>
+                  <td><strong>{planText(r) || "-"}</strong>{r.source === "demo" && <span>Free demo</span>}</td>
                   <td>{r.student_count ? `~${r.student_count}` : "-"}</td>
                   <td className={s.nowrap}>{fmt(r.created_at)}</td>
                   <td><span className={`${s.pill} ${s[`st_${r.status}`]}`}>{STATUS[r.status] || r.status}</span></td>
@@ -112,6 +116,8 @@ export default function EnquiryReports({ onExpired }) {
               <dt>Email</dt><dd><a href={`mailto:${open.email}`}>{open.email}</a></dd>
               <dt>Location</dt><dd>{[open.city, open.state].filter(Boolean).join(", ") || "-"}</dd>
               <dt>Type</dt><dd>{open.institute_type || "-"}</dd>
+              <dt>Plan chosen</dt><dd><strong>{planText(open) || "-"}</strong>{open.estimated_yearly ? ` · est. ${money(open.estimated_yearly)} / year` : ""}</dd>
+              <dt>Came from</dt><dd>{SRC[open.source] || "-"}</dd>
               <dt>Students (approx.)</dt><dd>{open.student_count || "-"}</dd>
               <dt>Message</dt><dd className={s.pre}>{open.message || "-"}</dd>
               {open.handled_by && (<><dt>Last updated by</dt><dd>{open.handled_by} &middot; {fmt(open.handled_at)}</dd></>)}
