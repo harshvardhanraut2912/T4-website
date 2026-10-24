@@ -1,7 +1,7 @@
 // app/pricing/page.js
 import PricingClient from "./PricingClient";
 import { PLANS } from "@/lib/pricingPlans";
-import { SITE_URL } from "@/lib/siteConfig";
+import { SITE_URL } from "@/lib/seoConfig";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

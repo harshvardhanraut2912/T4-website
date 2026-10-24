@@ -1,7 +1,7 @@
 // app/robots.js  (new file)
 // Served automatically at /robots.txt.
 // Public pages are open to search engines and AI crawlers; private areas are blocked.
-import { SITE_URL } from '@/lib/siteConfig';
+import { SITE_URL } from '@/lib/seoConfig';
 
 const PRIVATE = ['/admin', '/api/', '/dashboard', '/exam', '/profile', '/training', '/qrchecker/'];
 

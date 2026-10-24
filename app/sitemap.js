@@ -1,7 +1,7 @@
 // app/sitemap.js  (new file)
 // Served automatically at /sitemap.xml. Lists only the PUBLIC pages.
 // Student dashboard, exam, admin and API pages are private and are not listed.
-import { SITE_URL } from '@/lib/siteConfig';
+import { SITE_URL } from '@/lib/seoConfig';
 
 export default function sitemap() {
   const lastModified = new Date();

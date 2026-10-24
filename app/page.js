@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styles from './home.module.css';
 import { MotionInit, BrandPreview, ExamFlow, PhoneShowcase } from './HomeClient';
 import { HomeJsonLd, HomeDetails, HomeFaq } from './HomeSeoSections';
-import { SITE_URL } from '@/lib/siteConfig';
+import { SITE_URL } from '@/lib/seoConfig';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
