@@ -105,7 +105,7 @@ export default function PricingClient() {
           <span className={`${s.w} ${s.grad}`} style={{ "--i": 3 }}>Or stop counting.</span>
         </h1>
         <p className={s.lead} style={{ "--i": 4 }}>
-          Choose a student-wise plan, or a flat price for your whole institute. Every plan comes with the same three things.
+          Choose a student-wise plan, or a flat price for your whole institute. Every plan comes with the same three things. Book a demo and we set up the plan that fits your institute.
         </p>
         <div className={s.heroBtns} style={{ "--i": 5 }}>
           <a className={s.primary} href="#plans">Compare plans <span>↓</span></a>
@@ -131,7 +131,7 @@ export default function PricingClient() {
         <div className={s.sectionIntro} data-rv>
           <span className={s.label}>Four ways to pay</span>
           <h2>Pick the plan that fits your institute</h2>
-          <p>All four include the student app, the teacher admin app and the website. Only the way you pay changes.</p>
+          <p>All four include the student app, the teacher admin app and the website. Only the way you pay changes. Pick a plan to book a demo, and we confirm everything with you before you pay.</p>
         </div>
 
         <div className={s.planGrid}>

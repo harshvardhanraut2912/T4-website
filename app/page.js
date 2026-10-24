@@ -1,13 +1,28 @@
 import Image from 'next/image';
 import styles from './home.module.css';
 import { MotionInit, BrandPreview, ExamFlow, PhoneShowcase } from './HomeClient';
+import { HomeJsonLd, HomeDetails, HomeFaq } from './HomeSeoSections';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Parikshiq | Your institute’s exam platform, under your brand',
-  description: 'White-label exam platform for coaching institutes: online mock tests, OMR exams checked from the teacher app, question PDFs in your format, a student practice app and chapter-wise reports.',
+  description: 'White-label exam platform for coaching institutes preparing students for MHT-CET, JEE and NEET: online mock tests, OMR exams checked from the teacher app, question PDFs in your format, a student practice app with 40,000+ MHT-CET questions and chapter-wise reports. Free demo available.',
+  keywords: ['white-label exam platform', 'coaching institute software', 'MHT-CET online test platform', 'JEE NEET online exams for institutes', 'OMR sheet checking app', 'online test series for coaching classes', 'MHT-CET practice questions', 'PYQ practice', 'student performance reports', 'Parikshiq'],
+  alternates: { canonical: '/' },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
   openGraph: {
+    type: 'website',
+    siteName: 'Parikshiq',
+    url: '/',
     title: 'Parikshiq | Your institute’s exam platform, under your brand',
     description: 'Run exams, check OMR sheets and track every student under your own institute name.',
+    images: ['/images/other_images/Parikshiq-name.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Parikshiq | Your institute’s exam platform, under your brand',
+    description: 'White-label online exams, OMR checking and student practice for MHT-CET, JEE and NEET institutes.',
     images: ['/images/other_images/Parikshiq-name.png'],
   },
 };
@@ -59,6 +74,7 @@ export default function HomePage() {
   return (
     <main className={styles.site}>
       <MotionInit />
+      <HomeJsonLd />
       <div className={styles.announcement}>
         <span className={styles.announcementDot} />
         Your brand, our engine: exam technology for coaching institutes
@@ -75,6 +91,7 @@ export default function HomePage() {
           <a href="#flow">Exam flow</a>
           <a href="#student-app">Student app</a>
           <a href="#reports">Reports</a>
+          <a href="#faq">FAQ</a>
           <a href="/pricing">Pricing</a>
         </nav>
         <div className={styles.headerActions}>
@@ -197,6 +214,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <HomeDetails />
+
       <section className={styles.priceTeaser} id="pricing" data-reveal>
         <div className={styles.ptHead}>
           <span className={styles.sectionLabel}>Simple pricing</span>
@@ -243,6 +262,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <HomeFaq />
+
       <section className={styles.ctaSection} id="contact">
         <div className={styles.ctaPattern} />
         <div className={styles.ctaLogo}><Image src="/images/other_images/Parikshiq-name.png" alt="Parikshiq" width={160} height={160} /></div>
@@ -256,7 +277,7 @@ export default function HomePage() {
       <footer className={styles.footer}>
         <a href="/" className={styles.footerBrand}><Image src="/images/other_images/class-logo.png" alt="" width={38} height={38} /><span>Parikshiq<span className={styles.brandDot}>.</span></span></a>
         <p>Exam technology and digital tools for coaching institutes.</p>
-        <div><a href="#solutions">Solutions</a><a href="#flow">Exam flow</a><a href="/pricing">Pricing</a><a href="/login">Student login</a></div>
+        <div><a href="#solutions">Solutions</a><a href="#flow">Exam flow</a><a href="#faq">FAQ</a><a href="/pricing">Pricing</a><a href="/login">Student login</a></div>
         <span className={styles.copyright}>© {new Date().getFullYear()} Parikshiq</span>
       </footer>
     </main>

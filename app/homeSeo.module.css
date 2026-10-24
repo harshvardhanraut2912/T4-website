@@ -1,0 +1,22 @@
+/* app/homeSeo.module.css (new file): styles for the detailed section and FAQ on the homepage */
+.detailSection,.faqSection{max-width:1176px;margin:auto;padding:90px 25px 40px;color:#17213b}
+.intro{text-align:center;max-width:620px;margin:0 auto 40px}
+.label{display:inline-flex;color:#6254c8;font-size:10px;letter-spacing:.15em;font-weight:800;text-transform:uppercase}
+.intro h2{font-size:clamp(30px,3.6vw,44px);line-height:1.1;letter-spacing:-.05em;margin:17px 0;font-weight:850}
+.intro p{font-size:13px;line-height:1.85;color:#7b8191;margin:0 auto;max-width:520px}
+.detailGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.detailCard{padding:24px;background:#fff;border:1px solid #eae8e5;border-radius:15px;transition:transform .2s,box-shadow .2s}
+.detailCard:hover{transform:translateY(-3px);box-shadow:0 15px 40px #29265a0d}
+.detailCard h3{font-size:16px;letter-spacing:-.3px;margin:0 0 14px;color:#17213b}
+.detailCard ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.detailCard li{position:relative;padding-left:18px;font-size:11.5px;line-height:1.75;color:#6d7486}
+.detailCard li:before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:#cfc7fb}
+.faqList{max-width:780px;margin:0 auto;display:grid;gap:10px}
+.faqItem{background:#fff;border:1px solid #eae8e5;border-radius:13px;padding:0 20px}
+.faqItem summary{cursor:pointer;list-style:none;padding:17px 0;font-size:13px;font-weight:750;color:#17213b;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faqItem summary::-webkit-details-marker{display:none}
+.faqItem summary:after{content:"+";font-size:19px;font-weight:500;color:#6a5ad7;transition:transform .2s}
+.faqItem[open] summary:after{transform:rotate(45deg)}
+.faqItem p{margin:0 0 18px;font-size:12px;line-height:1.85;color:#6d7486}
+@media(max-width:900px){.detailGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.detailSection,.faqSection{padding:64px 20px 24px}.detailGrid{grid-template-columns:1fr;gap:12px}.intro h2{font-size:32px}}
