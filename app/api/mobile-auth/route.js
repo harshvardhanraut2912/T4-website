@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 // Why this exists: Expo Go's deep link (exp://<ip>:<port>/--/auth/callback) changes with the
 // network, so Supabase often rejects it and falls back to the Site URL (this website) with
 // ?code=... . The app instead asks Supabase to redirect HERE (always allow-listed through
-// https://t4-website.vercel.app/**), and this page forwards the code to the app's own deep link.
+// https://www.parikshiq.online/**), and this page forwards the code to the app's own deep link.
 //
 // The app passes its deep link as ?return=<url>. Only app schemes are accepted, so this
 // can never be used as an open redirect to a normal website.
-const ALLOWED_SCHEMES = ["exp:", "exps:", "t4classes:"];
+const ALLOWED_SCHEMES = ["exp:", "exps:", "parikshiq:"];
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
